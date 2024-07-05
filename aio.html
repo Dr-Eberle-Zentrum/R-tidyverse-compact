@@ -612,7 +612,7 @@ für die meisten Funktionen wie z.B. in <code>readr</code> und
   Antwort
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p><code>read_csv()</code> und <code>read_csv2()</code> sind Funktionen
 aus dem <code>readr</code> package, die beide CSV-Dateien einlesen
@@ -652,7 +652,7 @@ sich der Unterschied?</em></p>
   Lösung
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <p>Die Datensätze haben unterschiedliche Größen:</p>
 <ul>
@@ -1232,7 +1232,7 @@ Funktion.</p>
 <span>  <span class="fu">geom_vline</span><span class="op">(</span>data <span class="op">=</span> <span class="op">~</span> <span class="fu">filter</span><span class="op">(</span><span class="va">.x</span>, <span class="va">n</span><span class="op">&gt;</span><span class="fl">20</span><span class="op">)</span>,  <span class="co"># Datensatz einschränken</span></span>
 <span>            <span class="co"># (hier `.x` = Platzhalter für Daten aus vorheriger Ebene, d.h. `storms`)</span></span>
 <span>            <span class="fu">aes</span><span class="op">(</span>xintercept<span class="op">=</span><span class="va">year</span><span class="op">)</span>, <span class="co"># welche (Teil)Tabellendaten für Position zu verwenden</span></span>
-<span>            color<span class="op">=</span><span class="st">"red"</span>, fill<span class="op">=</span><span class="cn">NA</span>, stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Zusätzliche Formatierung</span></span>
+<span>            color<span class="op">=</span><span class="st">"red"</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Zusätzliche Formatierung</span></span>
 <span>  <span class="co"># Jahreszahlen der Jahre mit mehr als 20 Stürmen in schräger Textausrichtung</span></span>
 <span>  <span class="fu">geom_text</span><span class="op">(</span>data <span class="op">=</span> <span class="op">~</span> <span class="fu">filter</span><span class="op">(</span><span class="va">.x</span>, <span class="va">n</span><span class="op">&gt;</span><span class="fl">20</span><span class="op">)</span>, <span class="co"># Datensatz einschränken</span></span>
 <span>            <span class="fu">aes</span><span class="op">(</span>label<span class="op">=</span><span class="va">year</span>, x<span class="op">=</span><span class="va">year</span>, y<span class="op">=</span><span class="fu">max</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span>, <span class="co"># Daten und Positionen festlegen</span></span>
@@ -1240,18 +1240,12 @@ Funktion.</p>
 <span>  <span class="co"># disable clipping um Jahreszahltexte außerhalb des Diagrammbereichs anzuzeigen</span></span>
 <span>  <span class="fu">coord_cartesian</span><span class="op">(</span>clip <span class="op">=</span> <span class="st">"off"</span><span class="op">)</span></span></code></pre>
 </div>
-<div class="codewrapper">
-<h3 class="code-label">WARNING<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="warning" tabindex="0"><code>Warning in geom_vline(data = ~filter(.x, n &gt; 20), aes(xintercept = year), :
-Ignoring unknown parameters: `fill` and `stat`</code></pre>
-</div>
-<figure><img src="fig/Visualisierung-rendered-ggplot2-examples-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb3">
+<figure><img src="fig/Visualisierung-rendered-ggplot2-examples-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># optional: (zuletzt gemaltes) Diagramm speichern</span></span>
-<span><span class="co"># ggsave("storms_per_year.png", width=10, height=5, dpi=300)</span></span></code></pre>
+<span><span class="fu">ggsave</span><span class="op">(</span><span class="st">"storms_per_year.png"</span>, width<span class="op">=</span><span class="fl">10</span>, height<span class="op">=</span><span class="fl">5</span>, dpi<span class="op">=</span><span class="fl">300</span><span class="op">)</span></span></code></pre>
 </div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
@@ -1326,7 +1320,7 @@ GPT-3-Technologie basiert.</p></section><section id="aio-Zusammenfassung"><p>Con
 </div>
 </div>
 </div>
-<p>Im Folgenden werden allgemeine wichtige Punkte zusammengefasst.</p>
+<p>Im Folgenden werden wichtige allgemeine Punkte zusammengefasst.</p>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
 <i class="callout-icon" data-feather="key"></i>
