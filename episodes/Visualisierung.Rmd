@@ -58,16 +58,18 @@ storms |>
   geom_vline(data = ~ filter(.x, n>20),  # Datensatz einschränken
             # (hier `.x` = Platzhalter für Daten aus vorheriger Ebene, d.h. `storms`)
             aes(xintercept=year), # welche (Teil)Tabellendaten für Position zu verwenden
-            color="red", fill=NA, stat = "identity") + # Zusätzliche Formatierung
+            color="red") + # Zusätzliche Formatierung
   # Jahreszahlen der Jahre mit mehr als 20 Stürmen in schräger Textausrichtung
   geom_text(data = ~ filter(.x, n>20), # Datensatz einschränken
             aes(label=year, x=year, y=max(n)), # Daten und Positionen festlegen
             angle=70, vjust=0.5, hjust=-0.6, size=3, color="red") + # Textformatierung
   # disable clipping um Jahreszahltexte außerhalb des Diagrammbereichs anzuzeigen
   coord_cartesian(clip = "off")
+```
 
+```{r ggsave-example, eval=FALSE}
 # optional: (zuletzt gemaltes) Diagramm speichern
-# ggsave("storms_per_year.png", width=10, height=5, dpi=300)
+ggsave("storms_per_year.png", width=10, height=5, dpi=300)
 ```
 
 
