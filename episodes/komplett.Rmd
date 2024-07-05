@@ -1,5 +1,5 @@
 ---
-title: "Using RMarkdown"
+title: "R tidyverse kompakt"
 teaching: 30   # fix me
 exercises: 30  # fix me
 ---
@@ -8,43 +8,47 @@ exercises: 30  # fix me
 knitr::opts_chunk$set(echo = TRUE)
 # load tidyverse
 suppressPackageStartupMessages(library(tidyverse))
-# set working directory to the location of this file
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+# # set working directory to the location of this file
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 # get advanced table-of-content generation
-devtools::source_gist("c83e078bf8c81b035e32c3fc0cf04ee8",filename = 'render_toc.R')
+# devtools::source_gist("c83e078bf8c81b035e32c3fc0cf04ee8",filename = 'render_toc.R')
 ```
 
 
-[FDM-360](../) - Datenanalyse mit R (tidyverse)
+Kompaktüberblick zur Datenanalyse mit R tidyverse Paketen
 ====================================================
+
 
 Im Folgenden werden einige Möglichkeiten eingeführt, wie Datenverarbeitung und -visualisierung mit R und dem `tidyverse` Paketen durchgeführt werden können.
 Hierbei werden grundlegende Kenntnisse von R vorausgesetzt.
 Das Ziel diese Tutorials ist es, R NutzerInnen ohne `tidyverse` Kenntnisse einen Einstieg und allen mit `tidyverse` Vertrauten eine Zusammenfassung zu geben.
 
+:::::::::::::::::::::::::::::::::::::: questions 
+
+- Wie organisiere ich tabellarische Daten? (`tibble`)  
+- Was ist "tidy"?
+- Wie importiere ich Daten? (`readr`, `readxl`, ...)
+- Wie transformiere ich Tabellen? (`dplyr`, `tidyr`)
+- Wie baue ich komplexe Workflows mit pipes? (`magrittr`)
+- Wie bearbeite ich Text? (`stringr`)
+- Wie führe ich mehrere Datensätze zusammen? (`dplyr`)
+- Wie visualisiere ich Daten? (`ggplot2`)
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Überblick über die Möglichkeiten der Datenverarbeitung mit `tidyverse` Paketen
+- Nachschlagewerk für die Verwendung von `tidyverse` Funktionen
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 **Themenübersicht:**
 
-```{r toc, echo=FALSE} 
-render_toc("README.Rmd")
-```
+# ```{r toc, echo=FALSE} 
+# render_toc("README.Rmd")
+# ```
 
-
-## Voraussetzungen
-
-Folgende Installationen werden benötigt:
-
-- R version 4.2.0 oder neuer
-- `tidyverse` packages via `install.packages(c("tidyverse", "readxl", "writexl"))`
-  - `tibble` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/dataframe-2.1.pdf) - Tabellendatenstruktur
-  - `magrittr` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/magrittr.pdf) - Pipe Operator `%>%`
-  - `readr`, `readxl`, `writexl` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-import.pdf) - Datenimport & -export
-  - `dplyr` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-transformation.pdf) - Datentransformation & -verarbeitung
-  - `stringr` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/strings.pdf) - Textmanipulation
-  - `tidyr` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/tidyr.pdf) - Datenbereinigung
-  - `ggplot2` - [Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-visualization-2.1.pdf) - Visualisierung
-
-Alle Codebeispiele können in RStudio ausgeführt werden, wenn zuvor `tidyverse` geladen wurde.
-Zum Beispiel via `library(tidyverse)`.
 
 
 ## Literatur
@@ -73,7 +77,7 @@ Wenn das der Fall ist, sprich
 
 wird der Datensatz als "tidy" bezeichnet.
 
-## Dateiverarbeitung
+## Einlesen von Daten aus Dateien
 
 In R können Daten aus verschiedenen Quellen und von verschiedenen Orten eingelesen werden.
 
@@ -90,7 +94,7 @@ Die gängigsten Orte sind:
 
 Im Folgenden einige Beispiele zum Einlesen von Daten aus Dateien in R. 
 Die lokalen Dateien müssen sich im *Arbeitsverzeichnis* befinden, das mit `getwd()` abgefragt und mit `setwd()` gesetzt werden kann (oder mit entsprechenden Menüeinträgen in RStudio), oder mit vollem Verzeichnisinformationen angegeben werden (nicht gezeigt und nicht empfohlen).
-Um den folgenden Beispielcode mit lokalen Dateien auszuführen, müssen daher die Dateien [storms-2019-2021.csv](storms-2019-2021.csv) und [storms-2019-2021.xlsx](storms-2019-2021.xlsx) erst ins aktuelle Arbeitsverzeichnis gedownloaded werden.
+Um den folgenden Beispielcode mit lokalen Dateien auszuführen, müssen daher die Dateien [storms-2019-2021.csv](data/storms-2019-2021.csv) und [storms-2019-2021.xlsx](data/storms-2019-2021.xlsx) erst ins aktuelle Arbeitsverzeichnis gedownloaded werden.
 
 
 ```{r read.example, eval=FALSE}  
@@ -99,16 +103,16 @@ library(readr)
 read_csv("https://raw.githubusercontent.com/tidyverse/dplyr/master/data-raw/storms.csv")
 
 # lokale Excel-Datei
-readxl::read_xlsx("storms-2019-2021.xlsx", 
+readxl::read_xlsx("data/storms-2019-2021.xlsx", 
                   sheet = "storms-2020") # explizite Angabe des Tabellenblatts
 
 # lokale CSV Datei Semikolon getrennt (";") und mit westeuropäischem Zahlenformat ("," als Dezimaltrenner)
-read_csv2("storms-2019-2021.csv")
+read_csv2("data/storms-2019-2021.csv")
 
 # explizites Einstellen des Daten- und Dateiformats
 # (hier analog zu den Standardeinstellungen von `read_csv2()`)
 read_delim(
-  "storms-2019-2021.csv", # Dateiname
+  "data/storms-2019-2021.csv", # Dateiname
   delim = ";", # Spaltentrenner der Datei
   locale = locale( # zusätzliche Einstellungen wie gespeicherte Informationen kodiert sind
     decimal_mark = ",", # Dezimaltrenner
@@ -121,6 +125,39 @@ read_delim(
 
 Das Schreiben von Dateien erfolgt analog, indem einfach `write_`
 anstelle von `read_` verwendet wird.
+
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Frage: Was ist der Unterschied zwischen `read_csv()` und `read_csv2()`?
+
+
+:::::::::::::::::::::::: solution 
+
+### Antwort
+
+`read_csv()` und `read_csv2()` sind Funktionen aus dem `readr` package, die beide CSV-Dateien einlesen können. Der Unterschied liegt in der Standardkonfiguration der Funktionen. `read_csv()` ist für CSV-Dateien mit Komma als Dezimaltrenner und Punkt als Tausendertrenner konfiguriert (z.B. für englische oder amerikanische Datenkodierungen), während `read_csv2()` für CSV-Dateien mit Semikolon als Spaltentrenner und Komma als Dezimaltrenner konfiguriert ist (wie es in Westeuropa wie Deutschland oder Frankreich Standard ist).
+
+:::::::::::::::::::::::::::::::::
+
+
+## Aufgabe: Datenimport
+
+Führen sie die obigen Beispiele aus und passen sie sie an, um die Dateien `storms-2019-2021.csv` und `storms-2019-2021.xlsx` einzulesen. Hierzu müssen diese Dateien ggf. zuvor gedownloaded werden (oder sie verwenden direkt die URL zu den online verfügbaren Dateien).
+
+**Frage:** Wieviele Zeilen haben die jeweiligen Datensätze? Und wie erklärt sich der Unterschied?
+
+:::::::::::::::::::::::: solution 
+
+Die Datensätze haben unterschiedliche Größen:
+
+- `storms-2019-2021.csv` hat 19 Zeilen, es umfasst die Jahre 2019-2021.
+- `storms-2019-2021.xlsx` hat 10 Zeilen, es umfasst nur das Jahr 2020 da nur ein einzelnes Datenblatt importiert wurde.
+
+:::::::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 ## Tabellen transformieren
 
@@ -355,6 +392,16 @@ storms |>
 # ggsave("storms_per_year.png", width=10, height=5, dpi=300)
 ```
 
+
+::::::::::::::::::::::::::::::::::::: keypoints 
+
+- Speichern sie Daten nur in Variablen zwischen, wenn sie diese Daten mehrfach benötigen.
+- Verwenden sie Pipes (`|>`) um Daten durch eine Reihe von Transformationen zu leiten.
+- Versuchen sie die Datenverarbeitung in kleine, leicht verständliche Schritte zu unterteilen.
+- Vermeiden sie unnötige Schleifen und Schachtelungen, das meiste lässt sich mit Grouping, vektorisierten Operationen und Joins kompakter und eleganter lösen.
+- Auch explizite Elementzugriffe (z.B. `df$col`) und -operationen können i.d.R. effizient durch `dplyr` Funktionen ersetzt werden.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 -----------------------------------------------

@@ -1,0 +1,78 @@
+---
+title: "Datenstrukturen"
+teaching: 30   # fix me
+exercises: 30  # fix me
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# load tidyverse
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+:::::::::::::::::::::::::::::::::::::: questions
+
+- Welche "Datenarten" gibt es?
+- Wie organisiere ich tabellarische Daten?
+- Was ist "tidy"?
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: objectives
+
+- Standarddatentypen in R
+- `data.frame` und `tibble`
+- "tidy" Konzept
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Für die Verarbeitung von tabellarischen Daten werden in R i.d.R. `data.frame`s verwendet.
+Das `tidyverse` package liefert eine erweiterte Version des `data.frame`s, das `tibble`, welches etwas transparenter in seiner Verwendung ist.
+In einem `tibble` (oder `data.frame`) entspricht jede Zeile einem Datensatz (oder einer Beobachtung) und jede Spalte einer Variable (oder einem Merkmal) dieses Datensatzes.
+Damit haben alle Daten in der gleichen Spalte den gleichen Datentyp, z.B. "Zahl" (`numeric`), "Kommazahl" (`double`), "Ganzzahl" (`integer`), "Text" (`character`), "Datum" (`date`), etc.
+Im Folgenden wird der [Beispieldatensatz `storms`](https://dplyr.tidyverse.org/reference/storms.html) aus dem `dplyr` package gezeigt.
+
+```{r tibble.example}
+dplyr::storms
+```
+Bei der Verwendung von `tibble`s sind unter den Spaltennamen die Datentypen der Spalten abgekürzt dargestellt.
+
+`data.frame`s oder `tibble`s können auch aus anderen Datenstrukturen erstellt werden, z.B. aus `vectors`, `lists` oder `matrices`.
+Kleinere Datensätze können auch direkt als `tibble` erstellt werden, indem die Daten in die Funktion `tibble()` eingegeben werden.
+
+```{r tibble.from.vector}
+marriages <- 
+  tibble(
+    name = c("Alice", "Bob", "Charlie"),
+    age = c(25, 30, 35),
+    married = c(TRUE, FALSE, TRUE)
+  )
+```
+
+
+Ziel der Datenverarbeitung ist es, die Daten so zu transformieren, dass sie für die Analyse und Visualisierung geeignet sind und ein Format wie oben gezeigt vorweisen.
+Wenn das der Fall ist, sprich
+
+- jede Zeile entspricht einem Datensatz und
+- jede Spalte entspricht einer Variable,
+
+wird der Datensatz als "tidy" bezeichnet.
+
+
+::::::::::::::::::::::::::::::::::::: keypoints
+
+- Spalten in einem `tibble` werden auch Variablen (des Datensatzes) genannt.
+  - Eine Spalte ist ein `vector`, d.h. es können nur Werte des gleichen Datentyps enthalten sein.
+- Zeilen in einem `tibble` werden auch Beobachtungen (des Datensatzes) genannt.
+- Ein Datensatz ist "tidy", 
+  - wenn jede Zeile einem Datensatz und jede Spalte einer Variable entspricht. 
+  - Vereinfacht: wenn man beim Visualisieren der Daten nur jeweils eine Zeile pro Datenpunkt benötigt und keine doppelt verwendet wird.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+-----------------------------------------------
+
+Dieses Dokument wurde mit Unterstützung von GitHub Copilot erstellt, einem KI-gestützten Autocompletion-Tool, das auf der OpenAI GPT-3-Technologie basiert.
+

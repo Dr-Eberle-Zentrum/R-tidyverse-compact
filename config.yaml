@@ -59,7 +59,8 @@ contact: 'info@eberle-zentrum.uni-tuebingen.de' # FIXME
 
 # Order of episodes in your lesson
 episodes:
-- komplett.Rmd
+- Datenstrukturen.Rmd
+- Datenimport.Rmd
 
 # Information for Learners
 learners:

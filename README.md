@@ -1,4 +1,4 @@
-# The Carpentries Workbench Template R Markdown Lesson
+# R tidyverse kompakt
 
 This lesson is a template lesson that uses [The Carpentries Workbench][workbench].
 
