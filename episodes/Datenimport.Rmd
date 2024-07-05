@@ -1,7 +1,7 @@
 ---
 title: "Datenimport aus Dateien"
-teaching: 30   # fix me
-exercises: 30  # fix me
+teaching: 10
+exercises: 5
 ---
 
 ```{r setup, include=FALSE}
@@ -51,16 +51,16 @@ library(readr)
 read_csv("https://raw.githubusercontent.com/tidyverse/dplyr/master/data-raw/storms.csv")
 
 # lokale Excel-Datei
-readxl::read_xlsx("data/storms-2019-2021.xlsx",
+readxl::read_xlsx("storms-2019-2021.xlsx",
                   sheet = "storms-2020") # explizite Angabe des Tabellenblatts
 
 # lokale CSV Datei Semikolon getrennt (";") und mit westeuropäischem Zahlenformat ("," als Dezimaltrenner)
-read_csv2("data/storms-2019-2021.csv")
+read_csv2("storms-2019-2021.csv")
 
 # explizites Einstellen des Daten- und Dateiformats
 # (hier analog zu den Standardeinstellungen von `read_csv2()`)
 read_delim(
-  "data/storms-2019-2021.csv", # Dateiname
+  "storms-2019-2021.csv", # Dateiname
   delim = ";", # Spaltentrenner der Datei
   locale = locale( # zusätzliche Einstellungen wie gespeicherte Informationen kodiert sind
     decimal_mark = ",", # Dezimaltrenner
@@ -102,6 +102,8 @@ Führen sie die obigen Beispiele aus und passen sie sie an, um die Dateien `stor
 *Wieviele Zeilen haben die jeweiligen Datensätze? Und wie erklärt sich der Unterschied?*
 
 :::::::::::::::::::::::: solution
+
+## Lösung
 
 Die Datensätze haben unterschiedliche Größen:
 

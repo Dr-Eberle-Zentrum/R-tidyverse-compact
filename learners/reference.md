@@ -1,8 +1,8 @@
 ---
-title: 'Reference'
+title: 'Generelles'
 ---
 
-## Glossary
+## Autoren
 
-This is a placeholder file. Please add content here. 
+- [Martin Raden](https://github.com/orgs/Dr-Eberle-Zentrum/people/martin-raden) - Universität Tübingen
 

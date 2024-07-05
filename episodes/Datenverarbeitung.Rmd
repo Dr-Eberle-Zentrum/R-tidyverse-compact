@@ -1,162 +1,30 @@
 ---
-title: "R tidyverse kompakt"
-teaching: 30   # fix me
-exercises: 30  # fix me
+title: "Datenverarbeitung"
+teaching: 20
+exercises: 0
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 # load tidyverse
 suppressPackageStartupMessages(library(tidyverse))
-# # set working directory to the location of this file
-# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-# get advanced table-of-content generation
-# devtools::source_gist("c83e078bf8c81b035e32c3fc0cf04ee8",filename = 'render_toc.R')
 ```
 
 
-Kompaktüberblick zur Datenanalyse mit R tidyverse Paketen
-====================================================
+:::::::::::::::::::::::::::::::::::::: questions
 
-
-Im Folgenden werden einige Möglichkeiten eingeführt, wie Datenverarbeitung und -visualisierung mit R und dem `tidyverse` Paketen durchgeführt werden können.
-Hierbei werden grundlegende Kenntnisse von R vorausgesetzt.
-Das Ziel diese Tutorials ist es, R NutzerInnen ohne `tidyverse` Kenntnisse einen Einstieg und allen mit `tidyverse` Vertrauten eine Zusammenfassung zu geben.
-
-:::::::::::::::::::::::::::::::::::::: questions 
-
-- Wie organisiere ich tabellarische Daten? (`tibble`)  
-- Was ist "tidy"?
-- Wie importiere ich Daten? (`readr`, `readxl`, ...)
-- Wie transformiere ich Tabellen? (`dplyr`, `tidyr`)
-- Wie baue ich komplexe Workflows mit pipes? (`magrittr`)
-- Wie bearbeite ich Text? (`stringr`)
-- Wie führe ich mehrere Datensätze zusammen? (`dplyr`)
-- Wie visualisiere ich Daten? (`ggplot2`)
+- Wie transformiere ich Tabellen?
+- Wie baue ich komplexe Workflows mit pipes?
+- Wie bearbeite ich Text?
+- Wie führe ich mehrere Datensätze zusammen?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Überblick über die Möglichkeiten der Datenverarbeitung mit `tidyverse` Paketen
-- Nachschlagewerk für die Verwendung von `tidyverse` Funktionen
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-**Themenübersicht:**
-
-# ```{r toc, echo=FALSE} 
-# render_toc("README.Rmd")
-# ```
-
-
-
-## Literatur
-
-Als zusätzliche Lektüre und für einen detaillierten Einstieg im Selbststudium empfehlen wir das frei verfügbare Buch [R for Data Science](https://r4ds.hadley.nz/).
-Dieses bildet z.B. auch die Grundlage unseres Einführungskurses zur Datenverarbeitung mit R.
-
-## Datenstrukturen
-
-Für die Verarbeitung von tabellarischen Daten werden in R i.d.R. `data.frame`s verwendet.
-Das `tidyverse` package liefert eine erweiterte Version des `data.frame`s, das `tibble`, welches etwas transparenter in seiner Verwendung ist.
-In einem `tibble` (oder `data.frame`) entspricht jede Zeile einem Datensatz (oder einer Beobachtung) und jede Spalte einer Variable (oder einem Merkmal) dieses Datensatzes.
-Damit haben alle Daten in der gleichen Spalte den gleichen Datentyp, z.B. "Zahl" (`numeric`), "Kommazahl" (`double`), "Ganzzahl" (`integer`), "Text" (`character`), "Datum" (`date`), etc.
-Im Folgenden wird der [Beispieldatensatz `storms`](https://dplyr.tidyverse.org/reference/storms.html) aus dem `dplyr` package gezeigt.
-
-```{r tibble.example}
-dplyr::storms
-```
-Bei der Verwendung von `tibble`s sind unter den Spaltennamen die Datentypen der Spalten abgekürzt dargestellt.
-
-Ziel der Datenverarbeitung ist es, die Daten so zu transformieren, dass sie für die Analyse und Visualisierung geeignet sind und ein Format wie oben gezeigt vorweisen.
-Wenn das der Fall ist, sprich
-
-- jede Zeile entspricht einem Datensatz und
-- jede Spalte entspricht einer Variable,
-
-wird der Datensatz als "tidy" bezeichnet.
-
-## Einlesen von Daten aus Dateien
-
-In R können Daten aus verschiedenen Quellen und von verschiedenen Orten eingelesen werden.
-
-Die gängigsten Quellen sind:
-
-- Textdateien (z.B. `.csv`, `.tsv`, `.txt`)
-- Excel-Dateien (z.B. `.xlsx`, `.xls`)
-- Datenbanken (z.B. `MySQL`, `PostgreSQL`, `SQLite`)
-
-Die gängigsten Orte sind:
-
-- lokale Dateien
-- URLs, also direkter Datenimport aus dem Internet oder lokalem Netzwerk
-
-Im Folgenden einige Beispiele zum Einlesen von Daten aus Dateien in R. 
-Die lokalen Dateien müssen sich im *Arbeitsverzeichnis* befinden, das mit `getwd()` abgefragt und mit `setwd()` gesetzt werden kann (oder mit entsprechenden Menüeinträgen in RStudio), oder mit vollem Verzeichnisinformationen angegeben werden (nicht gezeigt und nicht empfohlen).
-Um den folgenden Beispielcode mit lokalen Dateien auszuführen, müssen daher die Dateien [storms-2019-2021.csv](data/storms-2019-2021.csv) und [storms-2019-2021.xlsx](data/storms-2019-2021.xlsx) erst ins aktuelle Arbeitsverzeichnis gedownloaded werden.
-
-
-```{r read.example, eval=FALSE}  
-library(readr)
-# CSV aus dem Internet
-read_csv("https://raw.githubusercontent.com/tidyverse/dplyr/master/data-raw/storms.csv")
-
-# lokale Excel-Datei
-readxl::read_xlsx("data/storms-2019-2021.xlsx", 
-                  sheet = "storms-2020") # explizite Angabe des Tabellenblatts
-
-# lokale CSV Datei Semikolon getrennt (";") und mit westeuropäischem Zahlenformat ("," als Dezimaltrenner)
-read_csv2("data/storms-2019-2021.csv")
-
-# explizites Einstellen des Daten- und Dateiformats
-# (hier analog zu den Standardeinstellungen von `read_csv2()`)
-read_delim(
-  "data/storms-2019-2021.csv", # Dateiname
-  delim = ";", # Spaltentrenner der Datei
-  locale = locale( # zusätzliche Einstellungen wie gespeicherte Informationen kodiert sind
-    decimal_mark = ",", # Dezimaltrenner
-    grouping_mark = ".", # Tausendertrenner
-    encoding = "latin1" # (alte) westeuropäisches Buchstabenkodierung (z.B. Umlaute)
-    )
-  )
-
-```
-
-Das Schreiben von Dateien erfolgt analog, indem einfach `write_`
-anstelle von `read_` verwendet wird.
-
-
-::::::::::::::::::::::::::::::::::::: challenge 
-
-## Frage: Was ist der Unterschied zwischen `read_csv()` und `read_csv2()`?
-
-
-:::::::::::::::::::::::: solution 
-
-### Antwort
-
-`read_csv()` und `read_csv2()` sind Funktionen aus dem `readr` package, die beide CSV-Dateien einlesen können. Der Unterschied liegt in der Standardkonfiguration der Funktionen. `read_csv()` ist für CSV-Dateien mit Komma als Dezimaltrenner und Punkt als Tausendertrenner konfiguriert (z.B. für englische oder amerikanische Datenkodierungen), während `read_csv2()` für CSV-Dateien mit Semikolon als Spaltentrenner und Komma als Dezimaltrenner konfiguriert ist (wie es in Westeuropa wie Deutschland oder Frankreich Standard ist).
-
-:::::::::::::::::::::::::::::::::
-
-
-## Aufgabe: Datenimport
-
-Führen sie die obigen Beispiele aus und passen sie sie an, um die Dateien `storms-2019-2021.csv` und `storms-2019-2021.xlsx` einzulesen. Hierzu müssen diese Dateien ggf. zuvor gedownloaded werden (oder sie verwenden direkt die URL zu den online verfügbaren Dateien).
-
-**Frage:** Wieviele Zeilen haben die jeweiligen Datensätze? Und wie erklärt sich der Unterschied?
-
-:::::::::::::::::::::::: solution 
-
-Die Datensätze haben unterschiedliche Größen:
-
-- `storms-2019-2021.csv` hat 19 Zeilen, es umfasst die Jahre 2019-2021.
-- `storms-2019-2021.xlsx` hat 10 Zeilen, es umfasst nur das Jahr 2020 da nur ein einzelnes Datenblatt importiert wurde.
-
-:::::::::::::::::::::::::::::::::
-::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 
 ## Tabellen transformieren
@@ -180,7 +48,7 @@ Basistransformationen sind:
     -   `slice_max(storms, pressure)` = die Zeile mit dem höchsten Wert in der Spalte `pressure`
 -   Sortieren von Zeilen
     -   `arrange(storms, year)` = Sturmdaten nach Jahr aufsteigend sortieren
-    -   `arrange(storms, year, desc(month))` = Sturmdaten aufsteigend nach Jahr sortieren und innerhalb eines Jahres absteigend nach Monat 
+    -   `arrange(storms, year, desc(month))` = Sturmdaten aufsteigend nach Jahr sortieren und innerhalb eines Jahres absteigend nach Monat
 -   Duplikate entfernen
     -  `distinct(storms)` = alle Zeilen mit identischen Werten in allen Spalten entfernen
     -   `distinct(storms, year, month, day)` = alle Zeilen mit gleichen Werten in den Spalten `year`, `month` und `day` entfernen (reduziert die Spalten auf die Ausgewählten)
@@ -206,16 +74,16 @@ Basistransformationen sind:
 - (Teil)Tabellen "drehen" = pivotieren. Hiermit können Spalten in Zeilen und umgekehrt umgeformt werden. Das ist am Anfang etwas verwirrend, aber ungemein praktisch, um Daten in eine "tidy" Form zu bringen (siehe oben), die für die weitere Verarbeitung besser geeignet ist. Das Beispiel hierfür ist etwas länger, um für Anschauungszwecke die Datentabelle erst etwas einzukürzen.
 
 ```{r pivot.example}
-storms |> 
+storms |>
   filter(name == "Arthur" & year == 2020) |> # speziellen Sturm auswählen
   select(name, year, month, day, wind, pressure) |> # (zur Vereinfachung) nur spezifische Spalten
   # Verteile Wind und Druck in separate Zeilen mit entsprechenden Labels in einer neuen Spalte "measure"
-  pivot_longer(cols = c(wind, pressure), names_to = "measure", values_to = "value") |> 
+  pivot_longer(cols = c(wind, pressure), names_to = "measure", values_to = "value") |>
   slice_head(n=4) # nur die ersten 4 Zeilen anzeigen
- 
+
 ```
 
-Details und weitere Funktionen und Beispiele sind im 
+Details und weitere Funktionen und Beispiele sind im
 
 - [`dplyr`      Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-transformation.pdf) und
 - [`tidyr`     Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/tidyr.pdf)
@@ -261,7 +129,7 @@ Pipe-basierte workflows sind ...
 - einfach zu debuggen, da Zwischenergebnisse einfach ausgegeben werden können (einfach `view()` oder `print()` an das Ende der entsprechenden Zeile anhängen).
 - einfach zu wiederzuverwenden, da der gesamte Workflow in einer Zeile zusammengefasst ist und immer als Block aufgerufen wird. Dadurch können keine Zwischenschritte vergessen werden und der Workflow ist immer konsistent.
 
-*Wichtig:* R Kommandos können über mehrere Zeilen verteilt werden, wie im Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht. 
+*Wichtig:* R Kommandos können über mehrere Zeilen verteilt werden, wie im Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
 Hierzu wird z.B. der Pipe-Operator `|>` am Ende der Zeile geschrieben und der nächste Arbeitsschritt in der nächsten Zeile fortgesetzt.
 Gleiches gilt für jeden Operator (`+`,  `==`, `&`, ..) sowie unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht geschlossen ist (d.h. schließende Klammer wird in der nächsten oder einer späteren Zeile geschrieben).
 
@@ -291,7 +159,7 @@ Die Funktionen sind im [`stringr` Cheatsheet](https://raw.githubusercontent.com/
 Beispiele für deren Verwendung mit `mutate()` und Co. sind:
 
 ```{r stringr-examples, eval=FALSE}
-# Beispiel: Grossbuchstaben in Spalte "name" in Kleinbuchstaben umwandeln 
+# Beispiel: Grossbuchstaben in Spalte "name" in Kleinbuchstaben umwandeln
 # (und nur eindeutige Einträge in Spalte "name" anzeigen)
 mutate(storms, name = str_to_lower(name)) |> distinct(name)
 # Beispiel: Jahrhundert aus Spalte "year" extrahieren
@@ -304,7 +172,7 @@ filter(storms, str_detect(status, "storm")) |> distinct(name)
 
 ```
 
-Beachte: 
+Beachte:
 
 1.  wenn die (Daten)Eingabe einer `stringr` Funktion ein *Vektor* ist, wird die Funktion auf jedes Element des Vektors angewendet und gibt einen Vektor mit den Ergebnissen zurück. (= *vektorisierte Prozessierung* = zentrales Verarbeitungsprinzip in R)
 2.  wenn die Eingabe *kein* String ist (z.B. eine Zahl), wird die Eingabe in einen String umgewandelt und die Funktion auf den entstandenen String angewendet. (= *automatische Typumwandlung*, sogenanntes *coercion* in R)
@@ -316,25 +184,25 @@ Zum Beispiel können Daten in einer Tabelle die Anzahl der Sturmtage pro Jahr en
 
 ```{r dplyr-join-examples, eval=FALSE}
 # Datensatz mit Sturmschäden pro Jahr (zufällige Werte) für 2015-2024
-costs <- 
+costs <-
   tibble(year = 2015:2024, # Jahresbereich festlegen
          costs = runif(length(year), 1e6, 1e8)) # Zufallsdaten gleichverteilt erzeugen
 
 # Anzahl der Sturmtage pro Jahr
-stormyDays <- 
+stormyDays <-
   storms |>
   # Datensatz in Einzeljahre aufteilen
   group_by(year) |>
   # nur eine Zeile pro Monat/Jahr Kombination (pro Jahr) behalten
   distinct(month, day) |>
   # zählen, wie viele Zeilen pro Jahr noch vorhanden sind
-  count() |> 
+  count() |>
   ungroup()
-  
+
 
 # Beispiel (1): Sturmtaginformation (links) mit Kosteninformation (rechts) ergänzen
 # BEACHTE: für Jahre ohne Eintrag in `costs` wird `NA` eingetragen !
-left_join(stormyDays, costs, by = "year") |> 
+left_join(stormyDays, costs, by = "year") |>
   # nur die ersten und letzten 3 Zeilen anzeigen
   slice( c(1:3, (n()-2):n()) )
 
@@ -343,57 +211,9 @@ inner_join(stormyDays, costs, by = "year")
 
 ```
 
-## Daten visualisieren
-
-Die Visualisierung von Daten ist ein wichtiger Bestandteil der Datenanalyse, da sie es ermöglicht, Muster und Zusammenhänge in den Daten zu erkennen und zu kommunizieren.
-In R wird die Visualisierung von Daten mit dem `ggplot2` Paket durchgeführt, das auf der [*Grammar of Graphics*](https://r4ds.had.co.nz/data-visualisation.html) basiert.
-Hierbei wird die Visualisierung von Daten in verschiedene Schichten (z.B. Punkte, Linien, Balken) und Ebenen (z.B. x-Achse, y-Achse, Farbe, Form) unterteilt.
-Die Verküpfung von Tabellenspalten mit den Ebenen und Schichten (d.h. Welche Information wird wie fürs Plotting verwendet) erfolgt über die `aes()` Funktion.
 
 
-```{r ggplot2-examples}
-# Beispiel: Anzahl der Stürme pro Jahr visualisieren
-
-# Rohdatensatz startet Visualisierungsworkflow
-storms |> 
-  
-  ########### Datenvorbereitung #############
-
-  # auf einen Eintrag (Zeile) pro Sturm und Jahr reduzieren
-  distinct(year, name) |> 
-  # Anzahl der Stürme pro Jahr zählen
-  group_by(year) |>
-  count() |> 
-  ungroup() |> 
-
-  ########### Datenvisualisierung #############
-  
-  # ggplot-Objekt erstellen (Daten via pipe übergeben)
-  ggplot(aes(x = year, y=n)) + # Verknüpfung von Datenspalten (year, n) und Achsen (x,y)
-  # Diagrammtitel und Achsenbeschriftung
-  labs(title = "Anzahl der Stürme pro Jahr", x = "Jahr", y = "Anzahl") +
-  # grundlegende Diagrammformatierung (Hintergrundfarben, Schriftarten, ...)
-  theme_minimal() +
-  # Balkendiagramm mit Anzahl der Stürme pro Jahr
-  geom_bar(fill="skyblue3", stat = "identity") +
-  # Highlighting der Jahre mit mehr als 20 Stürmen
-  geom_vline(data = ~ filter(.x, n>20),  # Datensatz einschränken 
-            # (hier `.x` = Platzhalter für Daten aus vorheriger Ebene, d.h. `storms`)
-            aes(xintercept=year), # welche (Teil)Tabellendaten für Position zu verwenden
-            color="red", fill=NA, stat = "identity") + # Zusätzliche Formatierung
-  # Jahreszahlen der Jahre mit mehr als 20 Stürmen in schräger Textausrichtung
-  geom_text(data = ~ filter(.x, n>20), # Datensatz einschränken
-            aes(label=year, x=year, y=max(n)), # Daten und Positionen festlegen
-            angle=70, vjust=0.5, hjust=-0.6, size=3, color="red") + # Textformatierung
-  # disable clipping um Jahreszahltexte außerhalb des Diagrammbereichs anzuzeigen
-  coord_cartesian(clip = "off")
-
-# optional: (zuletzt gemaltes) Diagramm speichern
-# ggsave("storms_per_year.png", width=10, height=5, dpi=300)
-```
-
-
-::::::::::::::::::::::::::::::::::::: keypoints 
+::::::::::::::::::::::::::::::::::::: keypoints
 
 - Speichern sie Daten nur in Variablen zwischen, wenn sie diese Daten mehrfach benötigen.
 - Verwenden sie Pipes (`|>`) um Daten durch eine Reihe von Transformationen zu leiten.

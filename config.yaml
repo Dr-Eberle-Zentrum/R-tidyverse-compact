@@ -61,6 +61,9 @@ contact: 'info@eberle-zentrum.uni-tuebingen.de' # FIXME
 episodes:
 - Datenstrukturen.Rmd
 - Datenimport.Rmd
+- Datenverarbeitung.Rmd
+- Visualisierung.Rmd
+- Zusammenfassung.Rmd
 
 # Information for Learners
 learners:
