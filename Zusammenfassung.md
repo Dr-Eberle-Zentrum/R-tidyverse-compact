@@ -19,7 +19,7 @@ exercises: 0
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Im Folgenden werden allgemeine wichtige Punkte zusammengefasst.
+Im Folgenden werden wichtige allgemeine Punkte zusammengefasst.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
