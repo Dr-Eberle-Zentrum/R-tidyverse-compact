@@ -123,7 +123,7 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 <hr>
-<li><a class="dropdown-item" href="reference.html">Reference</a></li>
+<li><a class="dropdown-item" href="reference.html">Generelles</a></li>
           </ul>
 </li>
       </ul>
@@ -265,6 +265,42 @@
 </div>
 <!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="Datenverarbeitung.html">3. Datenverarbeitung</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush5">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading5">
+        <a href="Visualisierung.html">4. Visualisierung</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="Zusammenfassung.html">5. Zusammenfassung</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -290,7 +326,7 @@
                         <a href="../instructor/images.html">Extract All Images</a>
                       </li>
                       <hr>
-<li><a class="dropdown-item" href="reference.html">Reference</a></li>
+<li><a class="dropdown-item" href="reference.html">Generelles</a></li>
                     </ul>
 </div>
                 </div>
@@ -359,6 +395,63 @@ und Sonderzeichen korrekt einzulesen.</li>
 Dezimaltrenner verwenden.</li>
 <li>Excel-Dateien enthalten i.d.R. mehrere Blätter, die einzeln
 importiert werden müssen.</li>
+</ul></section><section id="Datenverarbeitung"><h2 class="section-heading"><a href="Datenverarbeitung.html">Datenverarbeitung</a></h2>
+<hr class="half-width">
+<ul>
+<li>Speichern sie Daten nur in Variablen zwischen, wenn sie diese Daten
+mehrfach benötigen.</li>
+<li>Verwenden sie Pipes (<code>|&gt;</code>) um Daten durch eine Reihe
+von Transformationen zu leiten.</li>
+<li>Versuchen sie die Datenverarbeitung in kleine, leicht verständliche
+Schritte zu unterteilen.</li>
+<li>Vermeiden sie unnötige Schleifen und Schachtelungen, das meiste
+lässt sich mit Grouping, vektorisierten Operationen und Joins kompakter
+und eleganter lösen.</li>
+<li>Auch explizite Elementzugriffe (z.B. <code>df$col</code>) und
+-operationen können i.d.R. effizient durch <code>dplyr</code> Funktionen
+ersetzt werden.</li>
+</ul></section><section id="Visualisierung"><h2 class="section-heading"><a href="Visualisierung.html">Visualisierung</a></h2>
+<hr class="half-width">
+<ul>
+<li>
+<code>ggplot2</code> benötigt einen <code>data.frame</code> als
+Eingabe, welcher “tidy” ist (d.h. eine Zeile pro Beobachtung und eine
+Spalte pro Variable).</li>
+<li>Das <code>mapping</code> Argument ermöglicht mittels der
+<code>aes()</code> Funktion die Verknüpfung von Variablen des
+Datensatzes (d.h. Spaltennamen) mit visuellen Eigenschaften (z.B.
+x-Achse, Farbe, Größe).</li>
+<li>
+<code>geom_*</code> Funktionen fügen dem Plot Schichten hinzu (z.B.
+Punkte, Linien, Balken).</li>
+<li>
+<code>labs()</code> ermöglicht die Anpassung von Diagrammtitel und
+Achsenbeschriftung.</li>
+<li>
+<code>theme_*</code> Funktionen ermöglichen die Anpassung genereller
+Diagrammformatierungen (z.B. Hintergrundfarben, Schriftarten).</li>
+<li>Es gibt viele weitere Funktionen und Argumente, um die Darstellung
+von Diagrammen zu verfeinern (z.B. <code>facet_wrap()</code>,
+<code>scale_*</code>, <code>coord_*</code>).</li>
+<li>Diagramme mit <code>ggsave()</code> gespeichert werden.</li>
+<li>Ausserdem gibt es viele Erweiterungen für <code>ggplot2</code> (z.B.
+<code>ggplotly</code>, <code>ggrepel</code>), die zusätzliche
+Funktionalitäten oder Visualisierungstypen/-diagramme bieten.</li>
+</ul></section><section id="Zusammenfassung"><h2 class="section-heading"><a href="Zusammenfassung.html">Zusammenfassung</a></h2>
+<hr class="half-width">
+<ul>
+<li>Speichern sie Daten nur in Variablen zwischen, wenn sie diese Daten
+mehrfach benötigen.</li>
+<li>Verwenden sie Pipes (<code>|&gt;</code>) um Daten durch eine Reihe
+von Transformationen zu leiten.</li>
+<li>Versuchen sie die Datenverarbeitung in kleine, leicht verständliche
+Schritte zu unterteilen.</li>
+<li>Vermeiden sie unnötige Schleifen und Schachtelungen, das meiste
+lässt sich mit Grouping, vektorisierten Operationen und Joins kompakter
+und eleganter lösen.</li>
+<li>Auch explizite Elementzugriffe (z.B. <code>df$col</code>) und
+-operationen können i.d.R. effizient durch <code>dplyr</code> Funktionen
+ersetzt werden.</li>
 </ul></section>
 </div>
     </main>
