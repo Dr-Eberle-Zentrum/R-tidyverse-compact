@@ -311,7 +311,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Datenverarbeitung</h1>
-        <p>Last updated on 2024-07-09 |
+        <p>Last updated on 2024-07-10 |
 
         <a href="https://github.com/Dr-Eberle-Zentrum/R-tidyverse-compact/edit/main/episodes/Datenverarbeitung.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -497,10 +497,15 @@ Cheatsheet</a></li>
 </ul><p>zusammengefasst.</p>
 </section><section><h2 class="section-heading" id="workflows-mittels-piping">Workflows mittels Piping<a class="anchor" aria-label="anchor" href="#workflows-mittels-piping"></a>
 <a class="anchor" aria-label="anchor" href="#workflows-mittels-piping"></a></h2>
-<hr class="half-width"><p>Seit R 4.1.0 ist der Pipe-Operator <code>|&gt;</code> standardmäßig
+<hr class="half-width"><p>Im obigen Beispiel wurde bereits der Pipe-Operator <code>|&gt;</code>
+verwendet, um die Arbeitsschritte direkt zu verketten, um das
+Abspeichern von Zwischenergebnisse in Variablen zu vermeiden.</p>
+<p>Seit R 4.1.0 ist der Pipe-Operator <code>|&gt;</code> standardmäßig
 in R enthalten. Alternativ bietet das <code>magrittr</code> package den
 Pipe-Operator <code>%&gt;%</code>, welcher eine etwas umfangreichere
-Funktionalität bietet. Für die meisten Anwendungen ist der
+Funktionalität bietet. Wer sich für die Unterschiede interessiert, kann
+diese im <a href="https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/" class="external-link">Blogbetrag
+dazu</a> nachlesen. Für die meisten Anwendungen ist der
 Standard-Pipe-Operator <code>|&gt;</code> ausreichend und äquivalent zu
 <code>%&gt;%</code> verwendbar.</p>
 <p>Der Pipe-Operator ist ein nützliches Werkzeug, um den Code lesbarer
@@ -548,9 +553,9 @@ zusammengefasst ist und immer als Block aufgerufen wird. Dadurch können
 keine Zwischenschritte vergessen werden und der Workflow ist immer
 konsistent.</li>
 </ul><p><em>Wichtig:</em> R Kommandos können über mehrere Zeilen verteilt
-werden, wie im Beispiel zu sehen ist, was die Übersichtlichkeit des
-Codes erhöht. Hierzu wird z.B. der Pipe-Operator <code>|&gt;</code> am
-Ende der Zeile geschrieben und der nächste Arbeitsschritt in der
+werden, wie im obigen Beispiel zu sehen ist, was die Übersichtlichkeit
+des Codes erhöht. Hierzu wird z.B. der Pipe-Operator <code>|&gt;</code>
+am Ende der Zeile geschrieben und der nächste Arbeitsschritt in der
 nächsten Zeile fortgesetzt. Gleiches gilt für jeden Operator
 (<code>+</code>, <code>==</code>, <code>&amp;</code>, ..) sowie
 unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht
@@ -751,8 +756,8 @@ any links that you are not going to use.
   "url": "https://Dr-Eberle-Zentrum.github.io/R-tidyverse-compact/Datenverarbeitung.html",
   "identifier": "https://Dr-Eberle-Zentrum.github.io/R-tidyverse-compact/Datenverarbeitung.html",
   "dateCreated": "2024-07-05",
-  "dateModified": "2024-07-09",
-  "datePublished": "2024-07-09"
+  "dateModified": "2024-07-10",
+  "datePublished": "2024-07-10"
 }
 
   </script><script>
