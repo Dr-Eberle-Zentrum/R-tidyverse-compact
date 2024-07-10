@@ -93,8 +93,11 @@ zusammengefasst.
 
 ## Workflows mittels Piping
 
+Im obigen Beispiel wurde bereits der Pipe-Operator `|>` verwendet, um die Arbeitsschritte direkt zu verketten, um das Abspeichern von Zwischenergebnisse in Variablen zu vermeiden.
+
 Seit R 4.1.0 ist der Pipe-Operator `|>` standardmäßig in R enthalten.
 Alternativ bietet das `magrittr` package den Pipe-Operator `%>%`, welcher eine etwas umfangreichere Funktionalität bietet.
+Wer sich für die Unterschiede interessiert, kann diese im  [Blogbetrag dazu](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) nachlesen.
 Für die meisten Anwendungen ist der Standard-Pipe-Operator `|>` ausreichend und äquivalent zu `%>%` verwendbar.
 
 Der Pipe-Operator ist ein nützliches Werkzeug, um den Code lesbarer zu machen und die Arbeitsschritte in einer logischen Reihenfolge zu verketten.
@@ -129,7 +132,7 @@ Pipe-basierte workflows sind ...
 - einfach zu debuggen, da Zwischenergebnisse einfach ausgegeben werden können (einfach `view()` oder `print()` an das Ende der entsprechenden Zeile anhängen).
 - einfach zu wiederzuverwenden, da der gesamte Workflow in einer Zeile zusammengefasst ist und immer als Block aufgerufen wird. Dadurch können keine Zwischenschritte vergessen werden und der Workflow ist immer konsistent.
 
-*Wichtig:* R Kommandos können über mehrere Zeilen verteilt werden, wie im Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
+*Wichtig:* R Kommandos können über mehrere Zeilen verteilt werden, wie im obigen Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
 Hierzu wird z.B. der Pipe-Operator `|>` am Ende der Zeile geschrieben und der nächste Arbeitsschritt in der nächsten Zeile fortgesetzt.
 Gleiches gilt für jeden Operator (`+`,  `==`, `&`, ..) sowie unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht geschlossen ist (d.h. schließende Klammer wird in der nächsten oder einer späteren Zeile geschrieben).
 
