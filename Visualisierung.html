@@ -118,11 +118,11 @@
   R tidyverse - kompakt
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 82%" class="percentage">
-    82%
+<aside class="col-md-12 lesson-progress"><div style="width: 78%" class="percentage">
+    78%
   </div>
   <div class="progress data">
-    <div class="progress-bar data" role="progressbar" style="width: 82%" aria-valuenow="82" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar data" role="progressbar" style="width: 78%" aria-valuenow="78" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -301,7 +301,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Visualisierung</h1>
-        <p>Last updated on 2024-07-10 |
+        <p>Last updated on 2024-07-11 |
 
         <a href="https://github.com/Dr-Eberle-Zentrum/R-tidyverse-compact/edit/main/episodes/Visualisierung.Rmd" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -339,12 +339,21 @@
 Datenanalyse, da sie es ermöglicht, Muster und Zusammenhänge in den
 Daten zu erkennen und zu kommunizieren. In R wird die Visualisierung von
 Daten mit dem <code>ggplot2</code> Paket durchgeführt, das auf der <a href="https://r4ds.had.co.nz/data-visualisation.html" class="external-link"><em>Grammar of
-Graphics</em></a> basiert. Hierbei wird die Visualisierung von Daten in
-verschiedene Schichten (z.B. Punkte, Linien, Balken) und Ebenen (z.B.
-x-Achse, y-Achse, Farbe, Form) unterteilt. Die Verküpfung von
-Tabellenspalten mit den Ebenen und Schichten (d.h. Welche Information
-wird wie fürs Plotting verwendet) erfolgt über die <code>aes()</code>
-Funktion.</p>
+Graphics</em></a> basiert. Hierbei müssen die Daten in tabellarischer
+Form vorliegen, d.h. jede Zeile entspricht einem Datensatz und jede
+Spalte einer Variable (“tidy data”).</p>
+<p>Die Visualisierung von Daten wird in verschiedene Schichten (z.B.
+Punkte, Linien, Balken) und Eigenschaften (z.B. x-Achse, y-Achse, Farbe,
+Form) unterteilt. Die Verküpfung von Tabellenspalten mit den Ebenen und
+Eigenschaften (d.h. Welche Information wird wie fürs Plotting verwendet)
+erfolgt über das Argument <code>mapping =</code> und die
+<code>aes()</code> Funktion. Schichten (z.B. Balken, Linien, Punkte)
+werden mit <code>geom_*()</code> Funktionen hinzugefügt, wobei die Daten
+für die Schicht über das Argument <code>data =</code> übergeben
+werden.</p>
+<p>Im Folgenden wird ein umfangreiches Beispiel für die Visualisierung
+von Daten mit <code>ggplot2</code> gezeigt, bei dem die Anzahl der
+Stürme pro Jahr visualisiert wird.</p>
 <div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -366,13 +375,15 @@ Funktion.</p>
 <span>  <span class="co">########### Datenvisualisierung #############</span></span>
 <span></span>
 <span>  <span class="co"># ggplot-Objekt erstellen (Daten via pipe übergeben)</span></span>
-<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y<span class="op">=</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Verknüpfung von Datenspalten (year, n) und Achsen (x,y)</span></span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y<span class="op">=</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="co"># Verknüpfung von Datenspalten (year, n) und Achsen (x,y)</span></span>
 <span>  <span class="co"># Diagrammtitel und Achsenbeschriftung</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Anzahl der Stürme pro Jahr"</span>, x <span class="op">=</span> <span class="st">"Jahr"</span>, y <span class="op">=</span> <span class="st">"Anzahl"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># grundlegende Diagrammformatierung (Hintergrundfarben, Schriftarten, ...)</span></span>
 <span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Balkendiagramm mit Anzahl der Stürme pro Jahr</span></span>
 <span>  <span class="fu">geom_bar</span><span class="op">(</span>fill<span class="op">=</span><span class="st">"skyblue3"</span>, stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># gepunktete horizontale Linie bei 20</span></span>
+<span>  <span class="fu">geom_hline</span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">20</span>, linetype<span class="op">=</span><span class="st">"dotted"</span>, col<span class="op">=</span><span class="st">"red"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="co"># Highlighting der Jahre mit mehr als 20 Stürmen</span></span>
 <span>  <span class="fu">geom_vline</span><span class="op">(</span>data <span class="op">=</span> <span class="op">~</span> <span class="fu">filter</span><span class="op">(</span><span class="va">.x</span>, <span class="va">n</span><span class="op">&gt;</span><span class="fl">20</span><span class="op">)</span>,  <span class="co"># Datensatz einschränken</span></span>
 <span>            <span class="co"># (hier `.x` = Platzhalter für Daten aus vorheriger Ebene, d.h. `storms`)</span></span>
@@ -391,6 +402,64 @@ Funktion.</p>
 <pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># optional: (zuletzt gemaltes) Diagramm speichern</span></span>
 <span><span class="fu">ggsave</span><span class="op">(</span><span class="st">"storms_per_year.png"</span>, width<span class="op">=</span><span class="fl">10</span>, height<span class="op">=</span><span class="fl">5</span>, dpi<span class="op">=</span><span class="fl">300</span><span class="op">)</span></span></code></pre>
+</div>
+<div id="sturmposition-visualisieren" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="sturmposition-visualisieren" class="callout-inner">
+<h3 class="callout-title">Sturmposition visualisieren<a class="anchor" aria-label="anchor" href="#sturmposition-visualisieren"></a>
+</h3>
+<div class="callout-content">
+<p>Zeichnen sie ein Punktdiagram, welches für folgenden Datensatz</p>
+<ul><li>Länge (x-Achse) und Breite (y-Achse) der Messung zeigt und die
+Punkte anhand des Sturmstatus einfärbt,</li>
+<li>die Achsen mit “Länge” und “Breite” beschriftet, und</li>
+<li>den Diagrammtitel “Sturmposition” hat.</li>
+</ul><div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode r" tabindex="0"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>storms <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="fu">group_by</span>(name,year) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="fu">slice_tail</span>(<span class="at">n=</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="co"># .. </span><span class="al">TODO</span><span class="co">: ggplot2 code hier einfügen ..</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">storms</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">name</span>,<span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">slice_tail</span><span class="op">(</span>n<span class="op">=</span><span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">long</span>, y <span class="op">=</span> <span class="va">lat</span>, color <span class="op">=</span> <span class="va">status</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span></span>
+<span>    title<span class="op">=</span><span class="st">"Sturmposition"</span>,</span>
+<span>    x<span class="op">=</span><span class="st">"Länge"</span>,</span>
+<span>    y<span class="op">=</span><span class="st">"Breite"</span>,</span>
+<span>    color<span class="op">=</span><span class="st">"Status"</span> <span class="co"># ansonsten klein geschrieben</span></span>
+<span>  <span class="op">)</span></span></code></pre>
+</div>
+<figure><img src="fig/Visualisierung-rendered-ggplot2-exercises-solution-1.png" style="display: block; margin: auto;" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># alternatively</span></span>
+<span><span class="co"># geom_title("Sturmposition") + geom_xlab("Länge") + geom_ylab("Breite") + geom_color("Status")</span></span></code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="keypoints1" class="callout keypoints">
 <div class="callout-square">
@@ -420,7 +489,8 @@ Diagrammformatierungen (z.B. Hintergrundfarben, Schriftarten).</li>
 <li>Es gibt viele weitere Funktionen und Argumente, um die Darstellung
 von Diagrammen zu verfeinern (z.B. <code>facet_wrap()</code>,
 <code>scale_*</code>, <code>coord_*</code>).</li>
-<li>Diagramme mit <code>ggsave()</code> gespeichert werden.</li>
+<li>Diagramme mit <code>ggsave()</code> in beliebigem Dateiformat (PNG,
+PDF, SVG, ..) speichern.</li>
 <li>Ausserdem gibt es viele Erweiterungen für <code>ggplot2</code> (z.B.
 <code>ggplotly</code>, <code>ggrepel</code>), die zusätzliche
 Funktionalitäten oder Visualisierungstypen/-diagramme bieten.</li>
@@ -495,7 +565,7 @@ any links that you are not going to use.
   "url": "https://Dr-Eberle-Zentrum.github.io/R-tidyverse-compact/Visualisierung.html",
   "identifier": "https://Dr-Eberle-Zentrum.github.io/R-tidyverse-compact/Visualisierung.html",
   "dateCreated": "2024-07-05",
-  "dateModified": "2024-07-10",
+  "dateModified": "2024-07-11",
   "datePublished": "2024-07-11"
 }
 
