@@ -125,10 +125,10 @@ storms_2020_monthly <- group_by(storms_2020, month)
 summarize(storms_2020_monthly, max_wind = max(wind))
 
 # Workflow mit Pipe-Operator = einfach lesbar und erweiterbar  *thumbs-up*
-storms |> # Datensatz
-  filter(year == 2020) |> # Zeilenauswahl
-  group_by(month) |> # Gruppierung
-  summarize(max_wind = max(wind)) # Zusammenfassung
+storms |>                 # Datensatz
+  filter(year == 2020) |>    # Zeilenauswahl
+  group_by(month) |>            # Gruppierung
+  summarize(max_wind = max(wind))  # Zusammenfassung
 ```
 
 Pipe-basierte workflows sind ...
@@ -139,9 +139,17 @@ Pipe-basierte workflows sind ...
 - einfach zu debuggen, da Zwischenergebnisse einfach ausgegeben werden können (einfach `view()` oder `print()` an das Ende der entsprechenden Zeile anhängen).
 - einfach zu wiederzuverwenden, da der gesamte Workflow in einer Zeile zusammengefasst ist und immer als Block aufgerufen wird. Dadurch können keine Zwischenschritte vergessen werden und der Workflow ist immer konsistent.
 
-*Wichtig:* R Kommandos können über mehrere Zeilen verteilt werden, wie im obigen Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
-Hierzu wird z.B. der Pipe-Operator `|>` am Ende der Zeile geschrieben und der nächste Arbeitsschritt in der nächsten Zeile fortgesetzt.
+::: callout
+
+## Mehrzeilige R Kommandos
+
+**Wichtig:** R Kommandos können über mehrere Zeilen verteilt werden, wie im obigen Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
+
+Hierzu wird z.B. der Pipe-Operator `|>` ans Ende der Zeile geschrieben und der nächste Arbeitsschritt in der nächsten Zeile fortgesetzt.
 Gleiches gilt für jeden Operator (`+`,  `==`, `&`, ..) sowie unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht geschlossen ist (d.h. schließende Klammer wird in der nächsten oder einer späteren Zeile geschrieben).
+
+:::::::::::
+
 
 ## Textdaten verändern und verwenden
 
@@ -151,7 +159,7 @@ Zudem sind viele mit regulären Ausdrücken verwendbar, um Textdaten aufgrund vo
 Alle Funktionen des `stringr` Paketes beginnen mit `str_` und sind in der [Dokumentation](https://stringr.tidyverse.org/reference/index.html) aufgeführt.
 Einige wichtige sind:
 
-- `str_c()`: Verkettet mehrere Strings zu einem
+- `str_c()`: Verkettet mehrere Strings zu einem, analog to `paste0()`
 - `str_detect()`: Prüft, ob ein String einen bestimmten Textteil enthält
 - `str_replace()`: Ersetzt einen Teil eines Strings durch einen anderen
 - `str_to_lower()`/`str_to_upper`: Wandelt alle Buchstaben in Klein-/Grossbuchstaben um
@@ -187,6 +195,37 @@ Beachte:
 1.  wenn die (Daten)Eingabe einer `stringr` Funktion ein *Vektor* ist, wird die Funktion auf jedes Element des Vektors angewendet und gibt einen Vektor mit den Ergebnissen zurück. (= *vektorisierte Prozessierung* = zentrales Verarbeitungsprinzip in R)
 2.  wenn die Eingabe *kein* String ist (z.B. eine Zahl), wird die Eingabe in einen String umgewandelt und die Funktion auf den entstandenen String angewendet. (= *automatische Typumwandlung*, sogenanntes *coercion* in R)
 
+
+## Reguläre Ausdrücke
+
+Für komplexe Textverarbeitung werden oft reguläre Ausdrücke verwendet.
+Diese erlauben es, Textmuster zu definieren, die in einem Text gesucht, ersetzt oder extrahiert werden können.
+
+Für eine Einführung in reguläre Ausdrücke siehe [RegexOne Tutorial](https://www.regexone.com/) oder [RStudio RegEx Cheat Sheet (pdf)](https://rstudio.github.io/cheatsheets/regex.pdf).
+
+
+:::::::::::::::::::: challenge
+
+## Reguläre Ausdrücke
+
+Betrachten sie noch einmal die beiden `mutate()` Beispiele von oben, in denen das Jahrhundert aus der Spalte "year" mit Hilfe von regulären Ausdrücken extrahiert wird.
+
+*Was genau definieren die beiden regulären Ausdrücke `^\\d{2}` und `..$`?*
+
+:::::::: solution
+
+- `^\\d{2}` = "die ersten zwei (`{2}`) Ziffern (`\\d`) am Textanfang (`^`)"
+  - hier genutzt um das Jahrhundert mit `str_extract()` zu extrahieren
+- `..$` = "die letzten zwei beliebigen Zeichen (`..`) am Ende des Textes (`$`)"
+  - hier genutzt um die letzten zwei Zeichen (Jahrzehnt) mit `str_remove()` zu entfernen
+
+:::::::::::::::::
+
+::::::::::::::::::::::::::::::
+
+
+
+
 ## Daten zusammenführen
 
 Oftmals liegen daten in mehreren Tabellen vor, die zusammengeführt werden müssen, um die Daten zu analysieren.
@@ -221,6 +260,37 @@ left_join(stormyDays, costs, by = "year") |>
 inner_join(stormyDays, costs, by = "year")
 ```
 
+
+:::::::::::::::::::: challenge
+
+## Spaltennamen
+
+Studieren sie die [Hilfeseite der join Funktionen](https://dplyr.tidyverse.org/reference/mutate-joins.html) und finden sie heraus, *wie sie die Spaltennamen der beiden Tabellen angeben können*, um die Daten zu verbinden, wenn die gemeinsamen Daten in unterschiedlich benannten Spalten stehen.
+
+:::::::: solution
+
+Das mapping der Spalten erfolgt über einen *benannten Vektor*, d.h. die Spaltennamen der linken Tabelle werden als Elementnamen für die entsprechenden Spaltennamen der rechten Tabelle verwendet:
+
+
+``` r
+stormyDays |> 
+  rename( Jahr = year ) |> # Jahresspalte exemplarisch umbenannt
+  filter( Jahr >= 2013 ) |> 
+  # geänderte Sturmtaginformation (links) aus der pipe
+  # mit Kosteninformation (rechts) aus expliziter Tabelle "costs" ergänzen
+  left_join( costs, 
+      # Explizites mapping von costs$year auf die "Jahr" Spalte der linken Tabelle
+      # Beachten sie das quoting der Spaltennamen!
+             by = c(Jahr = "year")
+      # Alternativ kann das mapping auch über eine Funktion erfolgen:
+      # Hier sind keine Anführungszeichen notwendig:
+      #  by = join_by(Jahr = year)
+      ) 
+```
+
+:::::::::::::::::
+
+::::::::::::::::::::::::::::::
 
 
 ::::::::::::::::::::::::::::::::::::: keypoints
