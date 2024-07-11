@@ -1,7 +1,7 @@
 ---
 title: "Datenstrukturen"
-teaching: 10
-exercises: 0
+teaching: 15
+exercises: 5
 ---
 
 ```{r setup, include=FALSE}
@@ -129,7 +129,7 @@ tibble::tibble( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6
 
 :::::::::::::::::::::::::: challenge
 
-*Was fällt ihnen?* 
+*Was fällt ihnen auf?* 
 
 :::::::::::::::: solution
 

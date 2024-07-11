@@ -1,7 +1,7 @@
 ---
 title: "Visualisierung"
-teaching: 10
-exercises: 0
+teaching: 15
+exercises: 10
 ---
 
 ```{r setup, include=FALSE}
@@ -25,9 +25,13 @@ suppressPackageStartupMessages(library(tidyverse))
 
 Die Visualisierung von Daten ist ein wichtiger Bestandteil der Datenanalyse, da sie es ermöglicht, Muster und Zusammenhänge in den Daten zu erkennen und zu kommunizieren.
 In R wird die Visualisierung von Daten mit dem `ggplot2` Paket durchgeführt, das auf der [*Grammar of Graphics*](https://r4ds.had.co.nz/data-visualisation.html) basiert.
-Hierbei wird die Visualisierung von Daten in verschiedene Schichten (z.B. Punkte, Linien, Balken) und Ebenen (z.B. x-Achse, y-Achse, Farbe, Form) unterteilt.
-Die Verküpfung von Tabellenspalten mit den Ebenen und Schichten (d.h. Welche Information wird wie fürs Plotting verwendet) erfolgt über die `aes()` Funktion.
+Hierbei müssen die Daten in tabellarischer Form vorliegen, d.h. jede Zeile entspricht einem Datensatz und jede Spalte einer Variable ("tidy data").
 
+Die Visualisierung von Daten wird in verschiedene Schichten (z.B. Punkte, Linien, Balken) und Eigenschaften (z.B. x-Achse, y-Achse, Farbe, Form) unterteilt.
+Die Verküpfung von Tabellenspalten mit den Ebenen und Eigenschaften (d.h. Welche Information wird wie fürs Plotting verwendet) erfolgt über das Argument `mapping = ` und die `aes()` Funktion.
+Schichten (z.B. Balken, Linien, Punkte) werden mit `geom_*()` Funktionen hinzugefügt, wobei die Daten für die Schicht über das Argument `data = ` übergeben werden.
+
+Im Folgenden wird ein umfangreiches Beispiel für die Visualisierung von Daten mit `ggplot2` gezeigt, bei dem die Anzahl der Stürme pro Jahr visualisiert wird.
 
 ```{r ggplot2-examples}
 # Beispiel: Anzahl der Stürme pro Jahr visualisieren
@@ -47,13 +51,15 @@ storms |>
   ########### Datenvisualisierung #############
 
   # ggplot-Objekt erstellen (Daten via pipe übergeben)
-  ggplot(aes(x = year, y=n)) + # Verknüpfung von Datenspalten (year, n) und Achsen (x,y)
+  ggplot(mapping = aes(x = year, y=n)) + # Verknüpfung von Datenspalten (year, n) und Achsen (x,y)
   # Diagrammtitel und Achsenbeschriftung
   labs(title = "Anzahl der Stürme pro Jahr", x = "Jahr", y = "Anzahl") +
   # grundlegende Diagrammformatierung (Hintergrundfarben, Schriftarten, ...)
   theme_minimal() +
   # Balkendiagramm mit Anzahl der Stürme pro Jahr
   geom_bar(fill="skyblue3", stat = "identity") +
+  # gepunktete horizontale Linie bei 20
+  geom_hline(yintercept = 20, linetype="dotted", col="red") +
   # Highlighting der Jahre mit mehr als 20 Stürmen
   geom_vline(data = ~ filter(.x, n>20),  # Datensatz einschränken
             # (hier `.x` = Platzhalter für Daten aus vorheriger Ebene, d.h. `storms`)
@@ -73,6 +79,51 @@ ggsave("storms_per_year.png", width=10, height=5, dpi=300)
 ```
 
 
+
+::::::::::::: challenge
+
+## Sturmposition visualisieren
+
+Zeichnen sie ein Punktdiagram, welches für folgenden Datensatz 
+
+- Länge (x-Achse) und Breite (y-Achse) der Messung zeigt und die Punkte anhand des Sturmstatus einfärbt,
+- die Achsen mit "Länge" und "Breite" beschriftet, und
+- den Diagrammtitel "Sturmposition" hat.
+
+
+```{r ggplot2-exercises, eval=FALSE}
+storms |> 
+  group_by(name,year) |> 
+  slice_tail(n=1) |> 
+  # .. TODO: ggplot2 code hier einfügen ..
+```
+
+
+:::::: solution
+
+```{r ggplot2-exercises-solution}
+storms |> 
+  group_by(name,year) |> 
+  slice_tail(n=1) |> 
+  ggplot(mapping = aes(x = long, y = lat, color = status)) +
+  geom_point() +
+  labs(
+    title="Sturmposition",
+    x="Länge",
+    y="Breite",
+    color="Status" # ansonsten klein geschrieben
+  )
+# alternatively
+# geom_title("Sturmposition") + geom_xlab("Länge") + geom_ylab("Breite") + geom_color("Status")
+
+```
+
+:::::::::::::::
+
+:::::::::::::::::::::::
+
+
+
 ::::::::::::::::::::::::::::::::::::: keypoints
 
 - `ggplot2` benötigt einen `data.frame` als Eingabe, welcher "tidy" ist (d.h. eine Zeile pro Beobachtung und eine Spalte pro Variable).
@@ -81,11 +132,10 @@ ggsave("storms_per_year.png", width=10, height=5, dpi=300)
 - `labs()` ermöglicht die Anpassung von Diagrammtitel und Achsenbeschriftung.
 - `theme_*` Funktionen ermöglichen die Anpassung genereller Diagrammformatierungen (z.B. Hintergrundfarben, Schriftarten).
 - Es gibt viele weitere Funktionen und Argumente, um die Darstellung von Diagrammen zu verfeinern (z.B. `facet_wrap()`, `scale_*`, `coord_*`).
-- Diagramme mit `ggsave()` gespeichert werden.
+- Diagramme mit `ggsave()` in beliebigem Dateiformat (PNG, PDF, SVG, ..) speichern.
 - Ausserdem gibt es viele Erweiterungen für `ggplot2` (z.B. `ggplotly`, `ggrepel`), die zusätzliche Funktionalitäten oder Visualisierungstypen/-diagramme bieten.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 -----------------------------------------------
 
