@@ -1,7 +1,7 @@
 ---
 title: "Datenverarbeitung"
-teaching: 20
-exercises: 0
+teaching: 30
+exercises: 10
 ---
 
 
@@ -149,6 +149,159 @@ Hierzu wird z.B. der Pipe-Operator `|>` ans Ende der Zeile geschrieben und der n
 Gleiches gilt für jeden Operator (`+`,  `==`, `&`, ..) sowie unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht geschlossen ist (d.h. schließende Klammer wird in der nächsten oder einer späteren Zeile geschrieben).
 
 :::::::::::
+
+
+
+:::::::::::::::::::: challenge
+
+## Sturmdaten
+
+*Erstelle eine Tabelle, welche für jeden Sturm vor 1980 neben dessen Namen nur das Jahr und dessen Status beinhaltet und nach Jahr und Status sortiert ist.*
+
+:::::::::::: solution
+
+
+``` r
+storms |>
+  # Zeilen filtern
+  filter(year < 1980) |>
+  # Spalten auswählen
+  select(name, year, status) |>
+  # doppelte Zeilen entfernen
+  distinct() |>
+  # sortieren
+  arrange(year, status)
+```
+
+``` output
+# A tibble: 129 × 3
+   name      year status       
+   <chr>    <dbl> <fct>        
+ 1 Amy       1975 extratropical
+ 2 Blanche   1975 extratropical
+ 3 Doris     1975 extratropical
+ 4 Eloise    1975 extratropical
+ 5 Gladys    1975 extratropical
+ 6 Hallie    1975 extratropical
+ 7 Blanche   1975 hurricane    
+ 8 Caroline  1975 hurricane    
+ 9 Doris     1975 hurricane    
+10 Eloise    1975 hurricane    
+# ℹ 119 more rows
+```
+:::::::::::::::::::::
+
+::::::::::::::::::::::::::::::
+
+
+## Gruppieren und Aggregieren
+
+Eine der wichtigsten Funktionen in `dplyr` ist das Gruppieren von Daten und das Aggregieren von Werten innerhalb dieser Gruppen.
+Dies wird in der Regel mit den Funktionen `group_by()` und `summarize()` durchgeführt.
+
+`group_by()` teilt den Datensatz in Gruppen (imaginäre Teiltabellen) auf, basierend auf den Werten in einer oder mehreren Spalten.
+Im Anschluß wird, vereinfacht gesagt, für jede Gruppe eine separate Berechnung durchgeführt.
+
+Die Funktion `summarize()` ist die am häufigsten verwendete Funktion, um Werte innerhalb dieser Gruppen zu aggregieren.
+
+Ein einfaches Beispiel:
+
+
+``` r
+storms |>
+  # Tabelle nach Jahr gruppieren
+  group_by(year) |>
+  # maximale Windgeschwindigkeit pro Jahr berechnen
+  summarize(max_wind = max(wind))
+```
+
+``` output
+# A tibble: 48 × 2
+    year max_wind
+   <dbl>    <int>
+ 1  1975      120
+ 2  1976      105
+ 3  1977      150
+ 4  1978      120
+ 5  1979      150
+ 6  1980      165
+ 7  1981      115
+ 8  1982      115
+ 9  1983      100
+10  1984      115
+# ℹ 38 more rows
+```
+
+In diesem Beispiel wird die Tabelle `storms` nach dem Jahr gruppiert und für jede Gruppe (d.h. jedes Jahr) die maximale Windgeschwindigkeit berechnet.
+Das Ergebnis ist eine Tabelle mit zwei Spalten: `year` und `max_wind`.
+
+::: callout
+
+Zu beachten ist, dass Gruppierungen in `dplyr` nur virtuell sind und nicht zu einer physischen Aufteilung des Datensatzes führen.
+Allerdings wird diese Gruppierung aufrecht erhalten, bis sie explizit aufgehoben wird (z.B. durch `ungroup()`) oder dies implizit durch eine andere Funktion geschieht (z.B. "schließt" `summarize()` die letzte Gruppierung).
+
+:::::::::::
+
+:::::::::::::::::::: challenge
+
+## Gruppiertes Filtern
+
+*Erstelle eine Tabelle, welche für jeden Sturmstatus das Jahr und den Namen des letzten Sturms auflistet.*
+
+
+
+:::::::::::: solution
+
+### Alternative 1 
+
+
+``` r
+storms |>
+  # decompose table by storm status
+  group_by(status) |>
+  # encode time information of each entry in a single column
+  mutate(date = parse_date_time(str_c(year,month,day,hour,sep="-"), "%Y-%m-%d-%H")) |>
+  # filter for the latest date
+  filter(date == max(date)) |>
+  select(year, name) |> 
+  # rejoin table information and undo grouping
+  ungroup() 
+```
+### Alternative 2
+
+
+``` r
+storms |>
+  # encode time information of each entry in a single column
+  mutate(date = parse_date_time(str_c(year,month,day,hour,sep="-"), "%Y-%m-%d-%H")) |>
+  # decompose table by storm status
+  group_by(status) |>
+  # cut out row with latest date
+  slice_max(date, n=1) |>
+  # rejoin table information and undo grouping
+  select(year, name) |> 
+  ungroup()
+```
+
+### Alternative 3
+
+
+``` r
+storms |>
+  # decompose table by storm status
+  group_by(status) |>
+  # sort ascending by date (hierarchical sorting)
+  arrange(year,month,day,hour) |>
+  # pick last row w.r.t. sorting
+  slice_tail(n=1) |>
+  # rejoin table information and undo grouping
+  select(year, name) |> 
+  ungroup() 
+```
+:::::::::::::::::::::
+
+::::::::::::::::::::::::::::::
+
 
 
 ## Textdaten verändern und verwenden
