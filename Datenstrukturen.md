@@ -88,6 +88,8 @@ Betrachten sie den Datensatz `marriages` von oben.
 
 :::::::::::::::: solution
 
+## Antwort
+
 
 ``` r
 # base R
@@ -151,6 +153,8 @@ tibble::tibble( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6
 ```
 
 :::::::::::::::::::::::::: challenge
+
+## Unterschiede
 
 *Was fällt ihnen auf?* 
 

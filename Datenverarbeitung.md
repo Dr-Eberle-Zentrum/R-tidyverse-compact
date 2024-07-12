@@ -323,6 +323,11 @@ storms |>
 
 ::::::::::::::::::::::::::::::
 
+Eine Zusammenfassung der wichtigsten Funktionen in `dplyr` finden sich in dessen Cheat Sheet.
+
+
+[![dplry cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/pngs/thumbnails/data-transformation-cheatsheet-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for dplyr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
+
 
 
 ## Tabellengestalt ändern
@@ -376,10 +381,7 @@ storms |>
 4 Arthur  2020     5    17 pressure  1006
 ```
 
-Details und weitere Funktionen und Beispiele sind in den Cheat Sheets des `dplyr` und `tidyr` Paketes übersichtlich zusammengefasst.
-
-[![dplry cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/pngs/thumbnails/data-transformation-cheatsheet-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for dplyr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
-
+Details und weitere Funktionen und Beispiele sind im Cheat Sheets des `tidyr` Paketes übersichtlich zusammengefasst.
 
 [![tidyr cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/pngs/thumbnails/tidyr-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for tidyr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
 

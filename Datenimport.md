@@ -140,7 +140,7 @@ Alternativ können sie auch in Windows (wie im obigen Beispiel) die "Linux-Schre
 - Das Arbeitsverzeichnis kann mit `getwd()` und `setwd()` abgefragt und gesetzt werden.
 - In Microsoft Windows können Pfade auch mit Schrägstrichen `/` statt Backslashes `\` geschrieben werden.
 - Achten sie auf die korrekte Kodierung von Textdateien, um Umlaute und Sonderzeichen korrekt einzulesen.
-- Denken sie daran, dass deutsche CSV-Dateien oft Semikolon (`;`) als Trennzeichen und Komma (`,`) als Dezimaltrenner verwenden.
+- Denken sie daran, dass deutsche CSV-Dateien oft Semikolon (`;`) als Trennzeichen und Komma `,` als Dezimaltrenner verwenden.
 - Excel-Dateien enthalten i.d.R. mehrere Blätter, die einzeln importiert werden müssen.
 - Zusammenfassung im [`readr` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-import.pdf)
 
