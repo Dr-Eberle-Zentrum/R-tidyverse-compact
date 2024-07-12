@@ -9,8 +9,8 @@ exercises: 10
 
 :::::::::::::::::::::::::::::::::::::: questions
 
-- Wie transformiere ich Tabellen?
 - Wie baue ich komplexe Workflows mit pipes?
+- Wie transformiere ich Tabellen?
 - Wie bearbeite ich Text?
 - Wie führe ich mehrere Datensätze zusammen?
 
@@ -23,7 +23,64 @@ exercises: 10
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Tabellen transformieren
+
+## Workflows mittels Piping
+
+In vielen Datenverarbeitungssprachen ist der Pipe-Operator ein nützliches Werkzeug, um Arbeitsschritte zu verketten, sodass das Abspeichern von Zwischenergebnisse in Variablen vermieden werden kann.
+
+Seit R 4.1.0 ist der Pipe-Operator `|>` standardmäßig in R enthalten.
+Alternativ bietet das `magrittr` package den Pipe-Operator `%>%`, welcher eine etwas umfangreichere Funktionalität bietet.
+Wer sich für die Unterschiede interessiert, kann diese im  [Blogbetrag dazu](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) nachlesen.
+Für die meisten Anwendungen ist der Standard-Pipe-Operator `|>` ausreichend und äquivalent zu `%>%` verwendbar.
+
+Der Pipe-Operator ist ein nützliches Werkzeug, um den Code lesbarer zu machen und die Arbeitsschritte in einer logischen Reihenfolge zu verketten.
+Hierbei wird das Ergebnis des vorherigen Arbeitsschrittes als erstes Argument des nächsten Arbeitsschrittes verwendet.
+Da das erste Argument von (den meisten) Funktionen der Datensatz ist, ermöglicht dies die Verknüpfung von Arbeitsschritten zu einem Workflow ohne Zwischenergebnisse speichern zu müssen oder Funktionsaufrufe zu verschachteln.
+
+Zum Beispiel:
+
+
+``` r
+# einfaches Beispiel zur Verarbeitung eines Vektors mit base R Funktionen
+
+# verschachtelte Funktionsaufrufe
+# entspricht der Leserichtung von rechts nach links
+# und einer Ergebnisbeschreibung ala "Wurzel der Summe ohne NA von 1, 2, 3, NA"
+sqrt( sum( c(1, 2, 3, NA), na.rm=TRUE ) )
+
+# mit Pipe-Operator
+# entspricht der Leserichtung von links nach rechts
+# und einer Beschreibung der Arbeitsschritte in ihrer Reihenfolge
+# ala "nehme 1, 2, 3, NA, summiere ohne NA und davon die Wurzel"
+c(1, 2, 3, NA) %>% 
+  sum(na.rm = TRUE) %>% 
+  sqrt()
+
+# ok, hier nicht zwingend nötig, aber zur Veranschlaulichung des Prinzips.. ;)
+```
+
+Pipe-basierte workflows sind ...
+
+- intuitiv lesbar, da sie der normalen Leserichtung entsprechen.
+- einfacher zu schreiben, da die umschließende Klammerung von Funktionsaufrufen entfällt. Funktionsargumente sind direkt den jeweiligen Funktionen zuordenbar.
+- einfach zu erweitern, da neue Arbeitsschritte einfach an das Ende der Kette angehängt werden können (z.B. `write_csv("bla.csv")` oder bestehende Arbeitsschritte ausgetauscht werden können.
+- reduzieren oftmals die Anzahl der temporären Variablen, die im globalen Workspace herumliegen und die Lesbarkeit des Codes beeinträchtigen.
+- einfach zu debuggen, da Zwischenergebnisse einfach ausgegeben werden können (einfach `view()` oder `print()` an das Ende der entsprechenden Zeile anhängen).
+- einfach wiederzuverwenden, da der gesamte Workflow in einer Zeile zusammengefasst ist und immer als Block aufgerufen wird. Dadurch können keine Zwischenschritte vergessen werden und der Workflow ist immer konsistent.
+
+::: callout
+
+## Mehrzeilige R Kommandos
+
+**Wichtig:** R Kommandos können über mehrere Zeilen verteilt werden, wie im obigen Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
+
+Hierzu wird z.B. der Pipe-Operator `|>` ans Ende der Zeile geschrieben und der nächste Arbeitsschritt in der nächsten Zeile fortgesetzt.
+Gleiches gilt für jeden Operator (`+`,  `==`, `&`, ..) sowie unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht geschlossen ist (d.h. schließende Klammer wird in der nächsten oder einer späteren Zeile geschrieben).
+
+:::::::::::
+
+
+## Tabellen verarbeiten
 
 Die Transformation von Daten erfolgt i.d.R. mittels des `dplyr` packages.
 
@@ -67,101 +124,32 @@ Basistransformationen sind:
     -   `mutate(storms, wind = wind * 1.60934)` = Windgeschwindigkeit in km/h umrechnen und *bestehende Spalte überschreiben*
     -  `mutate(storms, wind_kmh = wind * 1.60934, wind_kmh_rounded = round(wind_kmh, 1))` = es können auch mehrere Spalten auf einmal berechnet werden und dabei direkt neue angelegte Spalten in anschliessenden Formeln verwendet werden (hier Runden auf eine Nachkommastelle)
 
-- (Teil)Tabellen "drehen" = pivotieren. Hiermit können Spalten in Zeilen und umgekehrt umgeformt werden. Das ist am Anfang etwas verwirrend, aber ungemein praktisch, um Daten in eine "tidy" Form zu bringen (siehe oben), die für die weitere Verarbeitung besser geeignet ist. Das Beispiel hierfür ist etwas länger, um für Anschauungszwecke die Datentabelle erst etwas einzukürzen.
-
-
-``` r
-storms |>
-  filter(name == "Arthur" & year == 2020) |> # speziellen Sturm auswählen
-  select(name, year, month, day, wind, pressure) |> # (zur Vereinfachung) nur spezifische Spalten
-  # Verteile Wind und Druck in separate Zeilen mit entsprechenden Labels in einer neuen Spalte "measure"
-  pivot_longer(cols = c(wind, pressure), names_to = "measure", values_to = "value") |>
-  slice_head(n=4) # nur die ersten 4 Zeilen anzeigen
-```
-
-``` output
-# A tibble: 4 × 6
-  name    year month   day measure  value
-  <chr>  <dbl> <dbl> <int> <chr>    <int>
-1 Arthur  2020     5    16 wind        30
-2 Arthur  2020     5    16 pressure  1008
-3 Arthur  2020     5    17 wind        35
-4 Arthur  2020     5    17 pressure  1006
-```
-
-Details und weitere Funktionen und Beispiele sind im
-
-- [`dplyr`      Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-transformation.pdf) und
-- [`tidyr`     Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/tidyr.pdf)
-
-zusammengefasst.
-
-
-## Workflows mittels Piping
-
-Im obigen Beispiel wurde bereits der Pipe-Operator `|>` verwendet, um die Arbeitsschritte direkt zu verketten, um das Abspeichern von Zwischenergebnisse in Variablen zu vermeiden.
-
-Seit R 4.1.0 ist der Pipe-Operator `|>` standardmäßig in R enthalten.
-Alternativ bietet das `magrittr` package den Pipe-Operator `%>%`, welcher eine etwas umfangreichere Funktionalität bietet.
-Wer sich für die Unterschiede interessiert, kann diese im  [Blogbetrag dazu](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/) nachlesen.
-Für die meisten Anwendungen ist der Standard-Pipe-Operator `|>` ausreichend und äquivalent zu `%>%` verwendbar.
-
-Der Pipe-Operator ist ein nützliches Werkzeug, um den Code lesbarer zu machen und die Arbeitsschritte in einer logischen Reihenfolge zu verketten.
-Hierbei wird das Ergebnis des vorherigen Arbeitsschrittes als erstes Argument des nächsten Arbeitsschrittes verwendet.
-Da das erste Argument von (den meisten) Funktionen der Datensatz ist, ermöglicht dies die Verknüpfung von Arbeitsschritten zu einem Workflow ohne Zwischenergebnisse speichern zu müssen oder Funktionsaufrufe zu verschachteln.
-
-Zum Beispiel:
-
-
-``` r
-# Beispiel: maximale Windgeschwindigkeit pro Monat im Jahr 2020
-
-# geschachtelte Schreibweise = schwer lesbar, da von "innen nach aussen" gelesen werden muss
-summarize( group_by( filter(storms, year == 2020), month), max_wind = max(wind))
-
-# mit temporären Variablen (die i.d.R. nicht wieder verwendet werden...!)
-storms_2020 <- filter(storms, year == 2020)
-storms_2020_monthly <- group_by(storms_2020, month)
-summarize(storms_2020_monthly, max_wind = max(wind))
-
-# Workflow mit Pipe-Operator = einfach lesbar und erweiterbar  *thumbs-up*
-storms |>                 # Datensatz
-  filter(year == 2020) |>    # Zeilenauswahl
-  group_by(month) |>            # Gruppierung
-  summarize(max_wind = max(wind))  # Zusammenfassung
-```
-
-Pipe-basierte workflows sind ...
-
-- einfach lesbar, da sie der normalen Leserichtung entsprechen.
-- reduzieren die Anzahl der temporären Variablen, die im globalen Workspace herumliegen und die Lesbarkeit des Codes beeinträchtigen.
-- einfach zu erweitern, da neue Arbeitsschritte einfach an das Ende der Kette angehängt werden können (z.B. `write_csv("bla.csv")` oder bestehende Arbeitsschritte ausgetauscht werden können.
-- einfach zu debuggen, da Zwischenergebnisse einfach ausgegeben werden können (einfach `view()` oder `print()` an das Ende der entsprechenden Zeile anhängen).
-- einfach zu wiederzuverwenden, da der gesamte Workflow in einer Zeile zusammengefasst ist und immer als Block aufgerufen wird. Dadurch können keine Zwischenschritte vergessen werden und der Workflow ist immer konsistent.
-
-::: callout
-
-## Mehrzeilige R Kommandos
-
-**Wichtig:** R Kommandos können über mehrere Zeilen verteilt werden, wie im obigen Beispiel zu sehen ist, was die Übersichtlichkeit des Codes erhöht.
-
-Hierzu wird z.B. der Pipe-Operator `|>` ans Ende der Zeile geschrieben und der nächste Arbeitsschritt in der nächsten Zeile fortgesetzt.
-Gleiches gilt für jeden Operator (`+`,  `==`, `&`, ..) sowie unvollständige Funktionsaufrufe, bei denen die Klammerung noch nicht geschlossen ist (d.h. schließende Klammer wird in der nächsten oder einer späteren Zeile geschrieben).
-
-:::::::::::
-
-
 
 :::::::::::::::::::: challenge
 
-## Sturmdaten
+## Stürme vor 1980
 
 *Erstelle eine Tabelle, welche für jeden Sturm vor 1980 neben dessen Namen nur das Jahr und dessen Status beinhaltet und nach Jahr und Status sortiert ist.*
 
 :::::::::::: solution
 
+# Hinweise
+
+Verwenden sie eine Pipe die folgende Funktionen verbindet
+- `filter()`
+- `select()`
+- `distinct()`
+- `arrange()`
+
+:::::::::::::::::::::
+
+:::::::::::: solution
+
+# Lösung
+
 
 ``` r
+# Ausgangsdatensatz = Beginn der Pipe
 storms |>
   # Zeilen filtern
   filter(year < 1980) |>
@@ -237,10 +225,13 @@ Das Ergebnis ist eine Tabelle mit zwei Spalten: `year` und `max_wind`.
 
 ::: callout
 
+## Achtung
+
 Zu beachten ist, dass Gruppierungen in `dplyr` nur virtuell sind und nicht zu einer physischen Aufteilung des Datensatzes führen.
 Allerdings wird diese Gruppierung aufrecht erhalten, bis sie explizit aufgehoben wird (z.B. durch `ungroup()`) oder dies implizit durch eine andere Funktion geschieht (z.B. "schließt" `summarize()` die letzte Gruppierung).
 
 :::::::::::
+
 
 :::::::::::::::::::: challenge
 
@@ -249,10 +240,44 @@ Allerdings wird diese Gruppierung aufrecht erhalten, bis sie explizit aufgehoben
 *Erstelle eine Tabelle, welche für jeden Sturmstatus das Jahr und den Namen des letzten Sturms auflistet.*
 
 
+:::::::::::: solution
+
+### Erwartete Ausgabe
+
+
+``` output
+# A tibble: 9 × 3
+  status                  year name  
+  <fct>                  <dbl> <chr> 
+1 tropical wave           2018 Kirk  
+2 subtropical depression  2020 Dolly 
+3 disturbance             2022 Julia 
+4 extratropical           2022 Martin
+5 subtropical storm       2022 Nicole
+6 hurricane               2022 Nicole
+7 tropical storm          2022 Nicole
+8 tropical depression     2022 Nicole
+9 other low               2022 Nicole
+```
+
+:::::::::::::::::::::
 
 :::::::::::: solution
 
-### Alternative 1 
+## Hinweise
+
+- Gruppieren sie die Tabellendaten nach `status`, um für jeden Sturmtyp eine "Teiltabelle" zu erhalten
+- Um den letzten Sturm zu finden
+  - Möglichkeit 1: neue Spalte mit Zeitinformation zusammensetzen und damit die Zeile mit maximalen Datum (pro Teiltabelle) extrahieren
+  - Möglichkeit 2: Teiltabellen bzgl. Zeitspalten sortieren und erste bzw. letzte Zeile extrahieren
+
+:::::::::::::::::::::
+
+:::::::::::: solution
+
+## Lösungen 
+
+### Alternative 1
 
 
 ``` r
@@ -261,47 +286,102 @@ storms |>
   group_by(status) |>
   # encode time information of each entry in a single column
   mutate(date = parse_date_time(str_c(year,month,day,hour,sep="-"), "%Y-%m-%d-%H")) |>
+  
   # filter for the latest date
   filter(date == max(date)) |>
-  select(year, name) |> 
+# ALTERNATIVELY cut out row with latest date
+  # slice_max(date, n=1) |>
+  
   # rejoin table information and undo grouping
-  ungroup() 
+  ungroup() |> 
+  select(status, year, name)
 ```
+
 ### Alternative 2
 
 
 ``` r
 storms |>
-  # encode time information of each entry in a single column
-  mutate(date = parse_date_time(str_c(year,month,day,hour,sep="-"), "%Y-%m-%d-%H")) |>
   # decompose table by storm status
   group_by(status) |>
-  # cut out row with latest date
-  slice_max(date, n=1) |>
-  # rejoin table information and undo grouping
-  select(year, name) |> 
-  ungroup()
-```
-
-### Alternative 3
-
-
-``` r
-storms |>
-  # decompose table by storm status
-  group_by(status) |>
+  
   # sort ascending by date (hierarchical sorting)
   arrange(year,month,day,hour) |>
   # pick last row w.r.t. sorting
   slice_tail(n=1) |>
+# ALTERNATIVELY pick row with last index
+  # slice( n() ) |> 
+  
+# OR do both (sort+pick) directly with slice_max
+  # slice_max( tibble(year,month,day,hour), n=1, with_ties = F ) |> 
+  
   # rejoin table information and undo grouping
-  select(year, name) |> 
-  ungroup() 
+  ungroup() |> 
+  select(status, year, name) 
 ```
 :::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::
 
+
+
+## Tabellengestalt ändern
+
+Die "tidy" Form ist eine spezielle Form von tabellarischen Daten, die für viele Datenverarbeitungsschritte geeignet ist. In der "tidy" Form sind die Daten so organisiert, dass jede Beobachtung (z.B. Messung) in einer Zeile notiert ist und jede Variable (also z.B. Beschreibungungen und Messwerte) eine Spalte definieren.
+Diese Art der Tabellenform wird auch "long table" oder "schmal" genannt, weil die Daten in einer langen, schmalen Tabelle organisiert sind.
+
+Allerdings werden Rohdaten häufig in einer "ungünstigen" Form vorliegen, die für die weitere Verarbeitung nicht optimal ist. 
+Manuelle Datenerfassung erfolgt oft in grafischen Oberflächen wie MS Excel, worin die Daten i.d.R. in einer  "breiten" oder "wide table" Form gespeichert, in der eine Variable (z.B. Messwert) in mehreren Spalten gespeichert ist. 
+In der "breiten" Form sind die Daten so organisiert, dass Beobachtungen (und ihre Messwerte) in Spalten gruppiert sind, während die Variablen in den Zeilen stehen.
+
+Hier ein Beispiel aus dem Tutorial [Introduction to R/tidyverse for Exploratory Data Analysis](https://tavareshugo.github.io/r-intro-tidyverse-gapminder/)
+
+![](https://github.com/tavareshugo/r-intro-tidyverse-gapminder/blob/e08446803314d9c8d59f309e3dee7b1cdd9a3158/fig/07-tidyr_pivot.png?raw=true){alt="wide and long table examples and respective pivoting calls" width="500px"}
+
+Das obige Beispiel zeigt eine "breite" Tabelle (rechts) und eine "lange" Tabelle (links) mit den gleichen Daten.
+Die Transformation zwischen beiden Formaten kann durch die Funktionen `pivot_longer()` und `pivot_wider()` erreicht werden.
+Beachten sie im Beispiel, dass die Spaltennamen des wide table Formats in beide Transformationsrichtungen verarbeitet werden können.
+
+::: callout
+
+## Vor- und Nachteile
+
+Während das wide table Format kompakter und damit ggf. besser zur Datenerfassung und -übersicht geeignet ist, ist das long table Format besser für die Datenanalyse und -visualisierung geeignet.
+In letzterem liegt Information redundant vor, da in jeder Zeile die komplette Information einer Beobachtung vorliegen muss.
+
+:::::::::::
+
+Die tidyverse Bibliothek `tidyr` bietet Funktionen, um Daten zwischen diesen beiden Formen zu transformieren. Dies wird auch als "reshaping" oder "pivotieren" bezeichnet.
+Hiermit können Spalten in Zeilen und umgekehrt umgeformt werden. 
+
+Das Beispiel hierfür ist etwas länger, um für Anschauungszwecke die Datentabelle erst etwas einzukürzen.
+
+
+``` r
+storms |>
+  filter(name == "Arthur" & year == 2020) |> # speziellen Sturm auswählen
+  select(name, year, month, day, wind, pressure) |> # (zur Vereinfachung) nur spezifische Spalten
+  # Verteile Wind und Druck in separate Zeilen mit entsprechenden Labels in einer neuen Spalte "measure"
+  pivot_longer(cols = c(wind, pressure), names_to = "measure", values_to = "value") |>
+  slice_head(n=4) # nur die ersten 4 Zeilen anzeigen
+```
+
+``` output
+# A tibble: 4 × 6
+  name    year month   day measure  value
+  <chr>  <dbl> <dbl> <int> <chr>    <int>
+1 Arthur  2020     5    16 wind        30
+2 Arthur  2020     5    16 pressure  1008
+3 Arthur  2020     5    17 wind        35
+4 Arthur  2020     5    17 pressure  1006
+```
+
+Details und weitere Funktionen und Beispiele sind in den Cheat Sheets des `dplyr` und `tidyr` Paketes übersichtlich zusammengefasst.
+
+[![dplry cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/pngs/thumbnails/data-transformation-cheatsheet-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for dplyr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
+
+
+[![tidyr cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/pngs/thumbnails/tidyr-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for tidyr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
 
 
 ## Textdaten verändern und verwenden
@@ -325,7 +405,10 @@ Einige wichtige sind:
 Die meisten Funktionen liefern nur einen Treffer oder verändern nur den ersten Treffer.
 Daher gibt es von vielen Funktionen Varianten, die alle Treffer finden und/oder verarbeiten, z.B. `str_detect_all()`, `str_replace_all()`, `str_extract_all()`.
 
-Die Funktionen sind im [`stringr` Cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/strings.pdf) zusammengefasst.
+Die Funktionen sind im [`stringr` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/master/strings.pdf) zusammengefasst.
+
+[![stringr cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/pngs/thumbnails/strings-cheatsheet-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for stringr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf)
+
 
 Beispiele für deren Verwendung mit `mutate()` und Co. sind:
 
@@ -365,7 +448,10 @@ Betrachten sie noch einmal die beiden `mutate()` Beispiele von oben, in denen da
 
 *Was genau definieren die beiden regulären Ausdrücke `^\\d{2}` und `..$`?*
 
+
 :::::::: solution
+
+### Lösung
 
 - `^\\d{2}` = "die ersten zwei (`{2}`) Ziffern (`\\d`) am Textanfang (`^`)"
   - hier genutzt um das Jahrhundert mit `str_extract()` zu extrahieren
@@ -422,6 +508,8 @@ Studieren sie die [Hilfeseite der join Funktionen](https://dplyr.tidyverse.org/r
 
 :::::::: solution
 
+## Lösung
+
 Das mapping der Spalten erfolgt über einen *benannten Vektor*, d.h. die Spaltennamen der linken Tabelle werden als Elementnamen für die entsprechenden Spaltennamen der rechten Tabelle verwendet:
 
 
@@ -453,6 +541,13 @@ stormyDays |>
 - Versuchen sie die Datenverarbeitung in kleine, leicht verständliche Schritte zu unterteilen.
 - Vermeiden sie unnötige Schleifen und Schachtelungen, das meiste lässt sich mit Grouping, vektorisierten Operationen und Joins kompakter und eleganter lösen.
 - Auch explizite Elementzugriffe (z.B. `df$col`) und -operationen können i.d.R. effizient durch `dplyr` Funktionen ersetzt werden.
+- Zusammenfassungen der Pakete:
+  - [`dplry` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf)
+  - [`tidyr` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf)
+  - [`stringr` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/strings.pdf)
+
+
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 

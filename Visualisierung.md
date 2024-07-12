@@ -79,6 +79,9 @@ ggsave("storms_per_year.png", width=10, height=5, dpi=300)
 ```
 
 
+Als Nachschlagewerk empfiehlt sich das offizielle Cheat Sheet des `ggplot2` Pakets, welches die wichtigsten Funktionen und Argumente übersichtlich darstellt: 
+
+[![ggplot2 cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/pngs/thumbnails/data-visualization-cheatsheet-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for ggplot2 ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
 
 ::::::::::::: challenge
 
@@ -140,6 +143,7 @@ storms |>
 - Es gibt viele weitere Funktionen und Argumente, um die Darstellung von Diagrammen zu verfeinern (z.B. `facet_wrap()`, `scale_*`, `coord_*`).
 - Diagramme mit `ggsave()` in beliebigem Dateiformat (PNG, PDF, SVG, ..) speichern.
 - Ausserdem gibt es viele Erweiterungen für `ggplot2` (z.B. `ggplotly`, `ggrepel`), die zusätzliche Funktionalitäten oder Visualisierungstypen/-diagramme bieten.
+- Zusammenfassung im [`ggplot2` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-visualization.pdf)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 

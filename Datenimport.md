@@ -75,6 +75,12 @@ Dies ist auch das Standardencoding für die meisten Funktionen wie z.B. in `read
 Das Schreiben von Dateien erfolgt analog, indem einfach `write_`
 anstelle von `read_` verwendet wird.
 
+Die Funktionen des `readr` Paketes sind übersichtlich in dessen Cheat Sheet zusammengefasst.
+
+[![dplyr cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/pngs/thumbnails/data-import-cheatsheet-thumbs.png){width="100%" alt="CLICK TO ENLARGE: cheat sheet for readr ackage"}](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-import.pdf)
+
+
+
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
@@ -99,7 +105,7 @@ Führen sie die obigen Beispiele aus und passen sie sie an, um die Dateien `stor
 
 :::::::::::::::::::::::: solution
 
-## Lösung
+## Antwort
 
 Die Datensätze haben unterschiedliche Größen:
 
@@ -134,8 +140,9 @@ Alternativ können sie auch in Windows (wie im obigen Beispiel) die "Linux-Schre
 - Das Arbeitsverzeichnis kann mit `getwd()` und `setwd()` abgefragt und gesetzt werden.
 - In Microsoft Windows können Pfade auch mit Schrägstrichen `/` statt Backslashes `\` geschrieben werden.
 - Achten sie auf die korrekte Kodierung von Textdateien, um Umlaute und Sonderzeichen korrekt einzulesen.
-- Denken sie daran, dass deutsche CSV-Dateien oft Semikolon `;` als Trennzeichen und Komma `,` als Dezimaltrenner verwenden.
+- Denken sie daran, dass deutsche CSV-Dateien oft Semikolon (`;`) als Trennzeichen und Komma (`,`) als Dezimaltrenner verwenden.
 - Excel-Dateien enthalten i.d.R. mehrere Blätter, die einzeln importiert werden müssen.
+- Zusammenfassung im [`readr` Cheat Sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-import.pdf)
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::

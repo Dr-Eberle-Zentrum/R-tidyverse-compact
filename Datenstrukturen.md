@@ -113,6 +113,8 @@ Achtung:
 
 :::::::::::::::: solution
 
+## Antwort
+
 - `name`: `character`
 - `age`: `numeric` also generell "Zahlen" 
   - entspricht i.d.R. `double` ist eine Unterart von `numeric`, die auch Kommazahlen enthält.
@@ -127,6 +129,8 @@ Achtung:
 *Wieviele Beobachtungen und Variablen hat der Datensatz?*
 
 :::::::::::::::: solution
+
+## Antwort
 
 - Beobachtungen: 4 = Anzahl Zeilen (oder Länge der Spalten)
 - Variablen: 3 = Anzahl Spalten
@@ -151,6 +155,8 @@ tibble::tibble( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6
 *Was fällt ihnen auf?* 
 
 :::::::::::::::: solution
+
+## Antwort
 
 
 ``` output
@@ -189,6 +195,7 @@ tibble::tibble( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6
 - Ein Datensatz ist "tidy", 
   - wenn jede Zeile einem Datensatz und jede Spalte einer Variable entspricht. 
   - Vereinfacht: wenn man beim Visualisieren der Daten nur jeweils eine Zeile pro Datenpunkt benötigt und keine doppelt verwendet wird.
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
