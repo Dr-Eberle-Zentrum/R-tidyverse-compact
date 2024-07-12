@@ -447,8 +447,9 @@ wie oben gezeigt vorweisen. Wenn das der Fall ist, sprich</p>
 <li>jede Zeile entspricht einem Datensatz und</li>
 <li>jede Spalte entspricht einer Variable,</li>
 </ul>
-<p>wird der Datensatz als “tidy” bezeichnet.</p>
-<div id="spaltenzugriff" class="callout challenge">
+<p>wird der Datensatz als “tidy” bezeichnet, was im Folgenden
+visualisiert wird.</p>
+<figure><img src="https://raw.githubusercontent.com/hadley/r4ds/main/images/tidy-1.png" style="width:40.0%" alt="tidy data concept" class="figure mx-auto d-block"></figure><div id="spaltenzugriff" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
@@ -469,7 +470,7 @@ extrahieren?</em></p>
   Antwort
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb4">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -514,7 +515,7 @@ aktuelle Datenstruktur), während - DOPPELTE eckige Klammern
   Antwort
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <ul>
 <li>
@@ -561,7 +562,7 @@ z.B. <code>as.integer(c(25, 30, 35))</code>.</li>
   Antwort
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <ul>
 <li>Beobachtungen: 4 = Anzahl Zeilen (oder Länge der Spalten)</li>
@@ -602,7 +603,7 @@ folgende Code in eine R-Session aus:</p>
   Antwort
   </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1217,7 +1218,7 @@ Status sortiert ist.</em></p>
   Hinweise
   </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Verwenden sie eine Pipe die folgende Funktionen verbindet -
 <code>filter()</code> - <code>select()</code> - <code>distinct()</code>
@@ -1233,7 +1234,7 @@ Status sortiert ist.</em></p>
   Lösung
   </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">R<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1357,7 +1358,7 @@ den Namen des letzten Sturms auflistet.</em></p>
   Erwartete Ausgabe
   </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1386,7 +1387,7 @@ den Namen des letzten Sturms auflistet.</em></p>
   Hinweise
   </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <ul>
 <li>Gruppieren sie die Tabellendaten nach <code>status</code>, um für
@@ -1411,7 +1412,7 @@ bzw. letzte Zeile extrahieren</li>
   Lösungen
   </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
 <div class="accordion-body">
 <div class="section level3">
 <h3 id="alternative-1">Alternative 1<a class="anchor" aria-label="anchor" href="#alternative-1"></a>
@@ -1655,7 +1656,7 @@ regulären Ausdrücken extrahiert wird.</p>
   Lösung
   </h4>
 </button>
-<div id="collapseSolution6" class="accordion-collapse collapse" aria-labelledby="headingSolution6" data-bs-parent="#accordionSolution6">
+<div id="collapseSolution6" class="accordion-collapse collapse" data-bs-parent="#accordionSolution6" aria-labelledby="headingSolution6">
 <div class="accordion-body">
 <ul>
 <li>
@@ -1740,7 +1741,7 @@ Spalten stehen.</p>
   Lösung
   </h4>
 </button>
-<div id="collapseSolution7" class="accordion-collapse collapse" aria-labelledby="headingSolution7" data-bs-parent="#accordionSolution7">
+<div id="collapseSolution7" class="accordion-collapse collapse" data-bs-parent="#accordionSolution7" aria-labelledby="headingSolution7">
 <div class="accordion-body">
 <p>Das mapping der Spalten erfolgt über einen <em>benannten Vektor</em>,
 d.h. die Spaltennamen der linken Tabelle werden als Elementnamen für die
