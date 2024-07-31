@@ -143,7 +143,7 @@ Achtung:
 
 ::::::::::::::::::::::::::::::::::::
 
-Um zu verdeutlichen, worin der Unterschied zwischen `data.frame` und `tibble` besteht, führen sie folgende Code in eine R-Session aus:
+Um zu verdeutlichen, worin der Unterschied zwischen `data.frame` und `tibble` besteht, führen sie folgende Code in einer R-Session aus:
 
 
 
@@ -153,6 +153,7 @@ data.frame( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6) )
 # Erstellen eines äquivalenten tibbles
 tibble::tibble( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6) )
 ```
+
 
 :::::::::::::::::::::::::: challenge
 
@@ -186,7 +187,7 @@ tibble::tibble( "das sind daten" = c(1, 2, 3), "das sind auch daten" = c(4, 5, 6
 - `tibble` zeigt die Spaltennamen so an, wie sie eingegeben wurden, und unterstützen auch Sonderzeichen in den Spaltennamen.
   - beachten Sie, dass Sonderzeichen in Spaltennamen in R nicht empfohlen werden, da sie zu Problemen führen können.
   - ausserdem müssen solche Spaltennamen später in der Verwendung in backtick "`" quotes gesetzt werden, siehe oben
-- ausserdem zeigt `tibble` nur die ersten 10 Zeilen an, während `data.frame` alle Zeilen anzeigt.
+- ausserdem (hier nicht zu sehen) zeigt `tibble` nur die ersten 10 Zeilen an, während `data.frame` alle Zeilen anzeigt.
 - zudem werden die Datentypen für jede Spalte in `tibble` angezeigt, was bei `data.frame` nicht der Fall ist.
 
 :::::::::::::::::::::::::
