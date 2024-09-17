@@ -1,6 +1,6 @@
 # R tidyverse kompakt
 
-Ein Carpentry-styled Lernmodul für R ProgrammierInnen in die Verwendung von `tidyverse` Paketen für die Datenanalyse und -visualisierung.
+Ein Carpentry-styled Lernmodul als Kurzeinstig für R ProgrammierInnen in die Verwendung von `tidyverse` Paketen für die Datenanalyse und -visualisierung.
 
 ## Zielgruppe
 

@@ -76,6 +76,10 @@ Dies ist vor allem beim *Import von alten Daten* wichtig, die in einem anderen Z
 Heutzutage wird meist `UTF-8` verwendet, was ein internationaler Standard ist und alle Zeichen korrekt darstellt.
 Dies ist auch das Standardencoding für die meisten Funktionen wie z.B. in `readr` und `readxl`.
 
+Zudem wird im obigen `read_delim()` Beispiel die Zahlenkodierung explizit gesetzt.
+Das heisst, dass Dezimaltrenner und Tausendertrenner explizit angegeben werden, da z.B. westeuropäische Länder wie Deutschland oder Frankreich Dezimaltrenner und Tausendertrenner vertauscht haben im Vergleich zu englischsprachigen Ländern (welche die Standardspezifikationen für CSV-Dateien sind).
+Daher wird in den meisten Skriptsprachen eine zusätzliche CSV-Datei-Spezifikation `read_csv2()` angeboten, die explizit für westeuropäische Länder konfiguriert ist und implizit die Spalten- und Dezimaltrennzeichen wie im obigen Beispiel setzt.
+
 Das Schreiben von Dateien erfolgt analog, indem einfach `write_`
 anstelle von `read_` verwendet wird.
 
