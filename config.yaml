@@ -16,7 +16,7 @@ varnish: Dr-Eberle-Zentrum/varnish
 
 # Overall title for pages.
 title: 'R tidyverse - kompakt' # FIXME
-lang: de
+lang: de # prepare for translation integration into sandpaper
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
 created: 2024-07-05 # FIXME
