@@ -136,6 +136,8 @@ Wenn sie die letzte Pfadangabe mit der Standard-Windows-Schreibweise vergleichen
 Das Problem ist, dass der Backslash in R als Escape-Zeichen verwendet wird, um spezielle TEXT-Zeichen zu kodieren. Daher wird der Backslash in Pfadangaben in R oft verdoppelt, um dies zu umgehen. Also würde der Pfad in R so aussehen: `"C:\\Users\\Username\\Documents\\data.csv"`.
 Alternativ können sie auch in Windows (wie im obigen Beispiel) die "Linux-Schreibweise" verwenden, die mit Schrägstrichen `/` arbeitet, die in R ohne Probleme verwendet werden können.
 
+Falls sie unbedingt (z.B. für Copy-and-Paste Einfügen) die Backslash-Notation der Pfade verwenden wollen, aber nicht Umformatieren möchten, können sie den Pfad auch als [*raw string*](https://r4ds.hadley.nz/strings.html#sec-raw-strings) codieren, in dem sie ihn statt mit Anführungszeichen `""` mit `r"()"` umschließen. Also in obigem Beispiel `r"(C:\Users\Username\Documents\data.csv)"`, wobei sie runde durch eckige Klammern tauschen können, falls ihr Pfad auch runde Klammern enthält.
+
 
 ::::::::::::::::::::::::::::::::::::: keypoints
 
