@@ -37,3 +37,4 @@ po/*~
 # renv detritus
 renv/sandbox/
 old.github
+renv.old
