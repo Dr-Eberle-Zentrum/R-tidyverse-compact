@@ -1,3 +1,4 @@
+# enable renv dependencies
 source("renv/activate.R")
 
 library(stats)
