@@ -1,3 +1,4 @@
+source("renv/activate.R")
 
 library(stats)
 # load tidyverse library if available
