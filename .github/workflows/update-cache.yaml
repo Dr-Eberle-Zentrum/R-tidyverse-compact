@@ -97,11 +97,6 @@ jobs:
           use-public-rspm: true
           install-r: false
 
-      - name: "Ensure yaml package is available for renv"
-        run: |
-          Rscript -e 'install.packages("yaml", lib = .Library, repos = "https://cran.rstudio.com")'
-        shell: bash
-
       - name: "Update {renv} deps and determine if a PR is needed"
         id: update
         uses: carpentries/actions/update-lockfile@main
